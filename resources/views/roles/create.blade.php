@@ -17,7 +17,7 @@
                 <div class="panel-body"> 
                   <div class="collapse in">
                     <!-- form start -->
-                    <form role="form" action="{{route('admin.roles.store')}}" method="POST">
+                    <form role="form" action="{{route('roles.store')}}" method="POST">
                       {{csrf_field()}}      
                         <div class="form-group">
                             <label for="name">Name (Human Readable)</label>

@@ -17,7 +17,7 @@
                 <div class="panel-body"> 
                   <div class="collapse in">
                     <!-- form start -->
-                    <form role="form" action="{{route('admin.roles.update', $role->id)}}" method="POST">
+                    <form role="form" action="{{route('roles.update', $role->id)}}" method="POST">
                       {{csrf_field()}}   
                       {{ method_field('PUT') }}   
                         <div class="form-group">

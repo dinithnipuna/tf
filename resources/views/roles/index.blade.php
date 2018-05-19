@@ -8,7 +8,7 @@
 
                     <div class="row">
                         <div class="col-md-6"><h4>Manage Roles</h4></div>
-                        <div class="col-md-6"><a href="{{route('admin.users.create')}}" class="btn btn-lg btn-primary pull-right"><i class="fa fa-user-plus m-r-10"></i> Create New Role</a></div>
+                        <div class="col-md-6"><a href="{{route('users.create')}}" class="btn btn-lg btn-primary pull-right"><i class="fa fa-user-plus m-r-10"></i> Create New Role</a></div>
                     </div>
                   
                       <div class="table-responsive">
@@ -36,7 +36,7 @@
                                     <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                   </span>
                                 </a>
-                                <a href="{{route('admin.roles.edit', $role->id)}}" class="table-link">
+                                <a href="{{route('roles.edit', $role->id)}}" class="table-link">
                                   <span class="fa-stack">
                                     <i class="fa fa-square fa-stack-2x"></i>
                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
