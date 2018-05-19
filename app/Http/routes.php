@@ -11,7 +11,10 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function() {  
+Route::post('/signup', [ 'uses' => 'HomeController@signup', 'as' => 'signup']);
+
+Route::group(['middleware' => 'auth'], function() { 
+	Route::get('/', [ 'uses' => 'HomeController@index', 'as' => 'home']); 
 	Route::resource('/admin', 'AdminController');
 	Route::post('/institutes/{id}/join', ['uses' =>'InstituteController@join', 'as' => 'institutes.join']);
 	Route::post('/institutes/{id}/leave', ['uses' =>'InstituteController@leave', 'as' => 'institutes.leave']);
@@ -38,8 +41,6 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 Route::auth();
-
-Route::get('/', [ 'uses' => 'HomeController@index', 'as' => 'home']);
 
 Route::get('search/autocomplete', ['uses' =>'HomeController@autocomplete', 'as' => 'search.data']);
 

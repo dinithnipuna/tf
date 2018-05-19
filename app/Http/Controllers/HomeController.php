@@ -5,21 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use App\Post;
 use Response;
 use Auth;
+use Hash;
+use Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -55,5 +49,20 @@ class HomeController extends Controller
         }
 
         return Response::json($results);
+    }
+
+    public function signup(Request $request)
+    {
+        $request->merge(['password' => Hash::make($request->password)]);
+        
+        $user = User::create($request->all());
+
+        $role = Role::where('name', 'student')->first();
+
+        $user->attachRole($role);
+
+        Session::flash('success','The User was successfully save!');
+
+        return redirect()->route('home');
     }
 }

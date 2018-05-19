@@ -106,7 +106,7 @@
               <!-- Register/Login Tabs-->
               <div class="reg-options">
                 <ul class="nav nav-tabs">
-                  <li><a href="#register" data-toggle="tab">Register</a></li>
+                  <li><a href="/register">Register</a></li>
                   <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
                 </ul><!--Tabs End-->
               </div>
@@ -118,92 +118,27 @@
                   <p class="text-muted">Be cool and join today. Meet millions</p>
                   
                   <!--Register Form-->
-                  <form name="registration_form" id="registration_form" class="form-inline" action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
+                  <form name="registration_form" id="registration_form" class="form-inline" action="{{ route('signup') }}" method="POST">
+                  {{ csrf_field() }}
                     <div class="row">
-                      <div class="form-group col-xs-6">
-                        <label for="firstname" class="sr-only">First Name</label>
-                        <input id="firstname" class="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name"/>
-                      </div>
-                      <div class="form-group col-xs-6">
-                        <label for="lastname" class="sr-only">Last Name</label>
-                        <input id="lastname" class="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name"/>
+                      <div class="form-group col-xs-12">
+                        <label for="name" class="sr-only">Your Name</label>
+                        <input id="name" class="form-control input-group-lg" type="text" name="signup_name" title="Enter your name" placeholder="Your name"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-xs-12">
                         <label for="email" class="sr-only">Email</label>
-                        <input id="email" class="form-control input-group-lg" type="text" name="email" title="Enter Email" placeholder="Your Email"/>
+                        <input id="email" class="form-control input-group-lg" type="text" name="signup_email" title="Enter Email" placeholder="Your Email"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-xs-12">
                         <label for="password" class="sr-only">Password</label>
-                        <input id="password" class="form-control input-group-lg" type="password" name="password" title="Enter password" placeholder="Password"/>
+                        <input id="password" class="form-control input-group-lg" type="password" name="signup_password" title="Enter password" placeholder="Password"/>
                       </div>
                     </div>
-					<div class="row">
-					  <p class="birth"><strong>Date of Birth</strong></p>
-                      <div class="form-group col-xs-12">
-                        <label for="birthday" class="sr-only">Date of Birth</label>
-                        <input id="birthday" class="form-control input-group-lg datepicker" type="text" name="birthday" title="Enter Birthday" placeholder="Date of Birth" data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-btn="true" data-date-today-highlight="true" data-date-start-date="" data-date-end-date=""/>
-                      </div>
-                    </div>
-                    <div class="form-group gender">
-                      <label class="radio-inline">
-                        <input type="radio" name="sex" value="male" checked>Male
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="sex" value="female">Female
-                      </label>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-xs-6">
-                        <label for="province" class="sr-only"></label>
-                        <select class="form-control" id="province" name="province">
-                          <option value="province" disabled selected>Province</option>
-                          <option value="Northern">Northern</option>
-                          <option value="North Western">North Western</option>
-                          <option value="Western">Western</option>
-                          <option value="North Central">North Central</option>
-                          <option value="Central">Central</option>
-                          <option value="Sabaragamuwa">Sabaragamuwa</option>
-                          <option value="Eastern">Eastern</option>
-                          <option value="Uva">Uva</option>
-                          <option value="Southern">Southern</option>
-                        </select>
-                      </div>
-					  <div class="form-group col-xs-6">
-                        <label for="district" class="sr-only"></label>
-                        <select class="form-control" id="district" name="district">
-                          <option value="district" disabled selected>District</option>
-                          <option value="Jaffna">Jaffna</option>
-                          <option value="Kilinochchi">Kilinochchi</option>
-                          <option value="Mannar">Mannar</option>
-                          <option value="Mullaitivu">Mullaitivu</option>
-                          <option value="Vavuniya">Vavuniya</option>
-                          <option value="Puttalam">Puttalam</option>
-                          <option value="Kurunegala">Kurunegala</option>
-                          <option value="Gampaha">Gampaha</option>
-                          <option value="Colombo">Colombo</option>
-                          <option value="Kalutara">Kalutara</option>
-                          <option value="Anuradhapura">Anuradhapura</option>
-                          <option value="Polonnaruwa">Polonnaruwa</option>
-                          <option value="Matale">Matale</option>
-                          <option value="Kandy">Kandy</option>
-                          <option value="Nuwara Eliya">Nuwara Eliya</option>
-                          <option value="Kegalle">Kegalle</option>
-                          <option value="Ratnapura">Ratnapura</option>
-                          <option value="Trincomalee">Trincomalee</option>
-                          <option value="Batticaloa">Batticaloa</option>
-                          <option value="Ampara">Ampara</option>
-                          <option value="Badulla">Badulla</option>
-                          <option value="Monaragala">Monaragala</option>
-                          <option value="Hambantota">Hambantota</option>
-                          <option value="Matara">Matara</option>
-                          <option value="Galle">Galle</option>
-                        </select>
-                      </div>
-                    </div>
+
 					<!-- -->
 					<p><a href="#login" data-toggle="tab">Already have an account?</a></p>
 					<input type="submit" class="btn btn-primary" value="Register Now" name="register"></input>
