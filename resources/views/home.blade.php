@@ -19,7 +19,11 @@
               <div class="widget-body">
                 <div class="user-heading round">
                   <a href="#">
-                      <img src="img/Friends/guy-3.jpg" alt="">
+                    @if(Auth::user()->avatar != null)
+                      <img src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture">
+                    @else
+                      <img src="{{ asset('images/users/default.png')}}" alt="User profile picture">
+                    @endif
                   </a>
                   <h1>{{ Auth::user()->name }}</h1>
                   <p>@username</p>
@@ -98,7 +102,12 @@
                           <div class="box box-widget">
                               <div class="box-header with-border">
                                 <div class="user-block">
-                                  <img class="img-circle" src="img/Friends/guy-3.jpg" alt="User Image">
+                                @if($post->user->avatar != null)
+                                  <img class="img-circle" src="{{asset('images/users/'. $post->user->avatar)}}" alt="User Image">
+                                @else
+                                   <img class="img-circle" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                @endif
+                                 
                                   <span class="username"><a href="{{ route('profile',['id' => $post->user->id]) }}">{{ $post->user->name }}</a></span>
                                   <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                 </div>
@@ -106,7 +115,7 @@
 
                               <div class="box-body" style="display: block;">
                                 
-                                <p>{{ $post->body }}</p>
+                                <p>{!! $post->body !!}</p>
 
                                 <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
                                 <a href="{{route('posts.like',['postId' => $post->id])}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</a>
@@ -115,7 +124,11 @@
                               <div class="box-footer box-comments" style="display: block;">
                               @foreach($post->replies as $reply)
                                 <div class="box-comment">
-                                  <img class="img-circle img-sm" src="img/Friends/guy-2.jpg" alt="User Image">
+                                  @if($reply->user->avatar != null)
+                                    <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->avatar)}}" alt="User Image">
+                                  @else
+                                     <img class="img-circle img-sm" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                  @endif
                                   <div class="comment-text">
                                     <span class="username">
                                     {{ $reply->user->name }}
@@ -128,7 +141,11 @@
                               </div>
                               <div class="box-footer" style="display: block;">
                                 <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                  <img class="img-responsive img-circle img-sm" src="img/Friends/guy-3.jpg" alt="Alt Text">
+                                  @if(Auth::user()->avatar != null)
+                                    <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User Image">
+                                  @else
+                                     <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  @endif
                                   <div class="img-push">
                                     {{csrf_field()}}
                                     <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">

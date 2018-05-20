@@ -23,7 +23,11 @@
               <div class="profile-status">
                 <i class="fa fa-check-circle"></i> Online
               </div>
-              <img src="img/Friends/guy-3.jpg" alt="" class="profile-img img-responsive center-block show-in-modal">
+              @if(Auth::user()->avatar != null)
+                <img src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
+              @else
+                <img src="{{ asset('/images/users/default.png') }}" alt="" class="profile-img img-responsive center-block show-in-modal">
+              @endif
               
               <div class="profile-details">
                 <ul class="fa-ul">
@@ -134,7 +138,11 @@
                                   <div class="box box-widget">
                                       <div class="box-header with-border">
                                         <div class="user-block">
-                                          <img class="img-circle" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                          @if($post->user->avatar != null)
+                                            <img class="img-circle" src="{{asset('images/users/'. $post->user->avatar)}}" alt="User Image">
+                                          @else
+                                             <img class="img-circle" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                          @endif
                                           <span class="username"><a href="#">{{ $post->user->name }}</a></span>
                                           <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                         </div>
@@ -151,7 +159,11 @@
                                       <div class="box-footer box-comments" style="display: block;">
                                       @foreach($post->replies as $reply)
                                         <div class="box-comment">
-                                          <img class="img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                          @if($reply->user->avatar != null)
+                                            <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->avatar)}}" alt="User Image">
+                                          @else
+                                             <img class="img-circle img-sm" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                          @endif
                                           <div class="comment-text">
                                             <span class="username">
                                             {{ $reply->user->name }}
@@ -164,7 +176,11 @@
                                       </div>
                                       <div class="box-footer" style="display: block;">
                                         <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                          <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="Alt Text">
+                                          @if(Auth::user()->avatar != null)
+                                            <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User Image">
+                                          @else
+                                             <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                          @endif
                                           <div class="img-push">
                                             {{csrf_field()}}
                                             <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -187,7 +203,11 @@
                                 @if($friend->hasRole('manager'))
                                     <li class="col-md-6">
                                       <div class="img">
-                                        <img src="{{ asset('/images/institutes/default.png') }}" alt="">
+                                        @if($friend->avatar != null)
+                                          <img src="{{asset('images/users/'. $friend->avatar)}}" alt="User Image">
+                                        @else
+                                           <img src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                        @endif
                                       </div>
                                       <div class="details">
                                         <div class="name">
@@ -218,7 +238,11 @@
                               @if($friend->hasRole('teacher'))
                                   <li class="col-md-6">
                                     <div class="img">
-                                      <img src="{{ asset('/images/teachers/default.jpg') }}" alt="">
+                                      @if($friend->avatar != null)
+                                          <img src="{{asset('images/users/'. $friend->avatar)}}" alt="User Image">
+                                        @else
+                                           <img src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                        @endif
                                     </div>
                                     <div class="details">
                                       <div class="name">
@@ -246,74 +270,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Online users sidebar content-->
-    <div class="chat-sidebar focus">
-      <div class="list-group text-left">
-        <p class="text-center visible-xs"><a href="#" class="hide-chat btn btn-success">Hide</a></p> 
-        <p class="text-center chat-title">Online users</p>  
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/guy-2.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Jeferh Smith</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-times-circle absent-status"></i>
-          <img src="img/Friends/woman-1.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Dapibus acatar</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/guy-3.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Antony andrew lobghi</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/woman-2.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Maria fernanda coronel</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/guy-4.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Markton contz</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-times-circle absent-status"></i>
-          <img src="img/Friends/woman-3.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Martha creaw</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-times-circle absent-status"></i>
-          <img src="img/Friends/woman-8.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Yira Cartmen</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/woman-4.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Jhoanath matew</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/woman-5.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Ryanah Haywofd</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/woman-9.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Linda palma</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/woman-10.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Andrea ramos</span>
-        </a>
-        <a href="messages1.html" class="list-group-item">
-          <i class="fa fa-check-circle connected-status"></i>
-          <img src="img/Friends/child-1.jpg" class="img-chat img-thumbnail">
-          <span class="chat-user-name">Dora ty bluekl</span>
-        </a>        
-      </div>
-    </div><!-- Online users sidebar content-->
 
     <!-- Modal -->
     <div class="modal fade" id="modalShow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

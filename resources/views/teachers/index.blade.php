@@ -25,7 +25,7 @@
                       </thead>
                       <tbody>
                       @foreach ($teachers as $teacher)
-                      
+                        @if($teacher->hasRole('teacher'))
                         <tr>
                           <td>{{ $teacher->id }}</td>
                           <td>{{ $teacher->name }}</td>
@@ -51,7 +51,7 @@
                             </a>
                           </td>
                         </tr>
-                       
+                       @endif
                       @endforeach
                       </tbody>
                     </table>

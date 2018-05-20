@@ -23,7 +23,11 @@
               <div class="profile-status">
                 <i class="fa fa-check-circle"></i> Online
               </div>
-              <img src="{{ asset('/images/institutes/default.png') }}" alt="" class="profile-img img-responsive center-block show-in-modal">
+              @if(Auth::user()->avatar != null)
+                <img src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
+              @else
+                <img src="{{ asset('images/institutes/default.png')}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
+              @endif
               
               <div class="profile-details">
                 <ul class="fa-ul">
@@ -167,9 +171,13 @@
                           <div class="box box-widget">
                               <div class="box-header with-border">
                                 <div class="user-block">
-                                  <img class="img-circle" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
-                                  <span class="username"><a href="#">{{ $post->user->name }}</a></span>
-                                  <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
+                                    @if($post->user->avatar != null)
+                                      <img class="img-circle" src="{{asset('images/users/'. $post->user->avatar)}}" alt="User Image">
+                                    @else
+                                       <img class="img-circle" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                    @endif
+                                    <span class="username"><a href="#">{{ $post->user->name }}</a></span>
+                                    <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                 </div>
                               </div>
 
@@ -184,7 +192,11 @@
                               <div class="box-footer box-comments" style="display: block;">
                               @foreach($post->replies as $reply)
                                 <div class="box-comment">
-                                  <img class="img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  @if($reply->user->avatar != null)
+                                    <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->avatar)}}" alt="User Image">
+                                  @else
+                                     <img class="img-circle img-sm" src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                  @endif
                                   <div class="comment-text">
                                     <span class="username">
                                     {{ $reply->user->name }}
@@ -197,7 +209,11 @@
                               </div>
                               <div class="box-footer" style="display: block;">
                                 <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                  <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="Alt Text">
+                                  @if(Auth::user()->avatar != null)
+                                    <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User Image">
+                                  @else
+                                     <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  @endif
                                   <div class="img-push">
                                     {{csrf_field()}}
                                     <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -221,7 +237,11 @@
                             @if($friend->hasRole('teacher'))
                               <li class="col-md-6">
                                 <div class="img">
-                                  <img src="{{ asset('/images/teachers/default.jpg') }}" alt="">
+                                  @if($friend->avatar != null)
+                                    <img src="{{asset('images/users/'. $friend->avatar)}}" alt="User Image">
+                                  @else
+                                    <img src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  @endif
                                 </div>
                                 <div class="details">
                                   <div class="name">
@@ -262,7 +282,11 @@
                         @foreach($requests as $user)
                             <li class="col-md-6">
                               <div class="img">
-                                <img src="img/Friends/woman-6.jpg" alt="">
+                                @if($user->avatar != null)
+                                  <img src="{{asset('images/users/'. $user->avatar)}}" alt="User Image">
+                                @else
+                                  <img src="{{ asset('/images/users/default.png') }}" alt="User Image">
+                                @endif
                               </div>
                               <div class="details">
                                 <div class="name">

@@ -91,13 +91,19 @@
                 
                 @role(['admin'])
                     <li class="{{ request()->is('institutes') ? 'active' : '' }}">
-                        <a href="/institutes"> Institutes</a>
+                        <a href="/institutes">
+                            <i class="fa fa-university"></i> Institutes
+                        </a>
                     </li>
                     <li>
-                        <a href="/grades"><i class="fa fa-users"></i> Grades</a>
+                        <a href="/grades">
+                            <i class="fa fa-bars"></i> Grades
+                        </a>
                     </li>
                     <li>
-                        <a href="/subjects"><i class="fa fa-users"></i> Subjects</a>
+                        <a href="/subjects">
+                            <i class="fa fa-bars"></i> Subjects
+                        </a>
                     </li>
                 @endrole
 
@@ -109,7 +115,7 @@
 
                 @role(['teacher'])
                     <li>
-                        <a href="/classes"><i class="fa fa-users"></i> Classes</a>
+                        <a href="/classes"><i class="fa fa-bars"></i> Classes</a>
                     </li>
                     <li>
                         <a href="/students"><i class="fa fa-users"></i> Students</a>
@@ -118,13 +124,25 @@
 
                 @role(['admin'])
                     <li>
-                        <a href="/users">Users</a>
+                        <a href="/users">
+                            <i class="fa fa-users"></i> Users
+                        </a>
                     </li>
                     <li>
-                        <a href="/roles">Roles</a>
+                        <a href="/roles">
+                            <i class="fa fa-key"></i> Roles
+                        </a>
                     </li>
                     <li>
-                        <a href="/permissions">Permissions</a>
+                        <a href="/permissions">
+                            <i class="fa fa-lock"></i> Permissions
+                        </a>
+                    </li>
+                     <li>
+                        <a href="/provinces"><i class="fa fa-bars"></i> Provinces</a>
+                    </li>
+                    <li>
+                        <a href="/districts"><i class="fa fa-bars"></i> Districts</a>
                     </li>
                 @endrole
 

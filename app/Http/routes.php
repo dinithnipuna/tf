@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::resource('/classes', 'ClsController');
 	Route::resource('/users', 'UserController');
 	Route::resource('/roles', 'RoleController');
+	Route::resource('/provinces', 'ProvinceController');
+	Route::resource('/districts', 'DistrictController');
 
 	Route::post('/posts/{postId}/reply', ['uses' =>'PostController@reply', 'as' => 'posts.reply']);
 	Route::resource('/posts', 'PostController');
@@ -47,7 +49,18 @@ Route::get('search/autocomplete', ['uses' =>'HomeController@autocomplete', 'as' 
 /**
 * User Profile
 */
-Route::get('/profile/{id}', [
+Route::get('/user/{id}', [
 	'uses' => 'ProfileController@getProfile',
 	'as' => 'profile'
+]);
+
+Route::get('/profile/edit', [
+	'uses' => 'ProfileController@getEdit',
+	'as' => 'profile.edit',
+	'middleware' => ['auth'],
+]);
+
+Route::post('/profile/edit', [
+	'uses' => 'ProfileController@postEdit',
+	'middleware' => ['auth'],
 ]);

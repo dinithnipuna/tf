@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Role;
+use App\Province;
+use App\District;
 use Session;
 use Hash;
 use Auth;
@@ -44,8 +46,12 @@ class InstituteController extends Controller
             'gold' => 'Gold - 35 Teachers Limit',
             'platinum' => 'Platinum - Unlimited Teachers'
         );
+        $provinces = Province::all();
+        $districts = District::all();
         return view('institutes.create')
-            ->withPackages($packages);
+                    ->withProvinces($provinces)
+                    ->withDistricts($districts)
+                    ->withPackages($packages);
     }
 
     /**
@@ -57,13 +63,29 @@ class InstituteController extends Controller
     public function store(Request $request)
     {
         $this->validateWith([
-        'name' => 'required|max:100',
-        'email' => 'required',
+            'name' => 'required|max:100',
+            'address' => 'required|max:255',
+            'province_id' => 'required',
+            'district_id' => 'required',
+            'town' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'package' => 'required'
         ]);
 
         $request->merge(['password' => Hash::make($request->password)]);
 
-        $user = User::create($request->all());
+        $user = new User();
+        $user->name = $request->name;
+        $user->address = $request->address;
+        $user->province_id = $request->province_id;
+        $user->district_id = $request->district_id;
+        $user->town = $request->town;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->phone = $request->phone;
+        $user->package = $request->package;
+        $user->save();
 
         $role = Role::where('name','manager')->first();
 
@@ -85,8 +107,8 @@ class InstituteController extends Controller
 
     public function getInstitute($user_id)
     {
-        $institute = Institute::where('user_id', $user_id)->first();
-        return view('institutes.show')->withInstitute($institute);
+        $user = Institute::where('user_id', $user_id)->first();
+        return view('institutes.show')->withInstitute($user);
     }
 
     /**
@@ -104,8 +126,12 @@ class InstituteController extends Controller
             'gold' => 'Gold - 35 Teachers Limit',
             'platinum' => 'Platinum - Unlimited Teachers'
         );
+        $provinces = Province::all();
+        $districts = District::all();
         return view('institutes.edit')
             ->withUser($user)
+            ->withProvinces($provinces)
+            ->withDistricts($districts)
             ->withPackages($packages);
 
     }
@@ -122,27 +148,27 @@ class InstituteController extends Controller
         $this->validateWith([
         'name' => 'required|max:100',
         'address' => 'required|max:255',
-        'province' => 'required',
-        'district' => 'required',
+        'province_id' => 'required',
+        'district_id' => 'required',
         'town' => 'required',
         'email' => 'required',
         'phone' => 'required',
-        'user_id' => 'required',
         'package' => 'required'
       ]);
 
-      $institute = Institute::findOrFail($id);
-      $institute->name = $request->name;
-      $institute->address = $request->address;
-      $institute->province = $request->province;
-      $institute->district = $request->district;
-      $institute->town = $request->town;
-      $institute->email = $request->email;
-      $institute->phone = $request->phone;
-      $institute->package = $request->package;
-      $institute->save();
+      $request->merge(['password' => Hash::make($request->password)]);
 
-      $institute->users()->attach($request->user_id);
+      $user = User::findOrFail($id);
+      $user->name = $request->name;
+      $user->address = $request->address;
+      $user->province_id = $request->province_id;
+      $user->district_id = $request->district_id;
+      $user->town = $request->town;
+      $user->email = $request->email;
+      $user->password = $request->password;
+      $user->phone = $request->phone;
+      $user->package = $request->package;
+      $user->save();
 
       return redirect()->route('institutes.index');
     }
@@ -156,23 +182,5 @@ class InstituteController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function join($id)
-    {
-        $institute = Institute::findOrFail($id);
-        $user_id = Auth::user()->id;
-        $student = Student::where('user_id',$user_id)->first();
-        $institute->students()->attach($student->id);
-        return redirect()->back();
-    }
-
-    public function leave($id)
-    {
-        $institute = Institute::findOrFail($id);
-        $user_id = Auth::user()->id;
-        $student = Student::where('user_id',$user_id)->first();
-        $institute->students()->detach($student->id);
-        return redirect()->back();
     }
 }

@@ -6,11 +6,13 @@ use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Cls;
-use App\Student;
-use App\Manager;
+use App\Province;
+use App\District;
 use App\Post;
 use Response;
 use Auth;
+use Image;
+use Storage;
 
 class ProfileController extends Controller
 {
@@ -58,6 +60,52 @@ class ProfileController extends Controller
             return view('students.show')->with('user',$user)->with('posts',$posts);
         }
         
+    }
+
+    public function getEdit()
+    {
+        $provinces = Province::all();
+        $districts = District::all();
+        return view('profile.edit')
+                    ->withProvinces($provinces)
+                    ->withDistricts($districts);
+    }
+
+    public function postEdit(Request $request)
+    {
+      $this->validateWith([
+        'name' => 'required|max:100',
+        'address' => 'required|max:255',
+        'province_id' => 'required',
+        'district_id' => 'required',
+        'town' => 'required',
+        'phone' => 'required',
+      ]);
+
+
+      $user = Auth::user();
+      $user->name = $request->name;
+      $user->address = $request->address;
+      $user->province_id = $request->province_id;
+      $user->district_id = $request->district_id;
+      $user->town = $request->town;
+      $user->phone = $request->phone;
+
+      if($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            $fileName = time().'.'.$avatar->getClientOriginalExtension();
+            $location = public_path('images/users/').$fileName;
+            Image::make($avatar)->fit(200, 200)->save($location);
+            $oldAvatar = $user->avatar; 
+            $user->avatar = $fileName;
+            if($oldAvatar != null){
+                Storage::delete('users/'.$oldAvatar);
+            }
+      }
+
+      $user->save();
+
+      return redirect()->route('profile',$user->id);
     }
 
     public function join($userId)

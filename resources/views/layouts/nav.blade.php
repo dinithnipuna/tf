@@ -34,7 +34,8 @@
                                          <li><a href="{{ route('institutes.show',['id' => $institute->id]) }}"><i class="fa fa-btn fa-sign-out"></i>{{$institute->name}}</a></li>
                                     @endforeach
                                 @endif --}}
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li><a href="{{ route('profile.edit') }}"><i class="fa fa-btn fa-pencil"></i> Update Profile</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>
                     @endif
