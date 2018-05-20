@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubjectTeacher extends Migration
+class CreateSubjectUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,9 @@ class CreateSubjectTeacher extends Migration
      */
     public function up()
     {
-         Schema::create('subject_teacher', function (Blueprint $table) {
+         Schema::create('subject_user', function (Blueprint $table) {
             $table->unsignedInteger('subject_id');
-            $table->unsignedInteger('teacher_id');
+            $table->unsignedInteger('user_id');
         });
     }
 
@@ -25,6 +25,6 @@ class CreateSubjectTeacher extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('institute_teacher');
+        Schema::dropIfExists('subject_user');
     }
 }
