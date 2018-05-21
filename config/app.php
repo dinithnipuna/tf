@@ -149,7 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
-
+        Illuminate\Notifications\NotificationServiceProvider::class,
         /*
          * Application Service Providers...
          */

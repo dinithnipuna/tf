@@ -18,6 +18,17 @@
             @endif
                 <li class="actives"><a href="{{ route('profile',['id' => Auth::user()->id]) }}">Profile</a></li>
             <li><a href="/">Home</a></li>
+             <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="fa fa-globe"></i> <span class="label label-danger">{{ Auth::user()->unreadNotifications()->count()}}</span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                @foreach (Auth::user()->unreadNotifications as $notification)
+                                    <li><a href="{{ route('profile.edit') }}">{{ $notification->data['user']['name'] }}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
             <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>

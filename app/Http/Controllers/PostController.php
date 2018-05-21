@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Post;
 use Auth;
+use App\Notifications\RepliedThread;
 
 class PostController extends Controller
 {
@@ -51,6 +52,8 @@ class PostController extends Controller
         ])->user()->associate(Auth::user());
 
         $post->replies()->save($reply);
+
+        Auth::user()->notify(new RepliedThread($post));
 
         return redirect()->back();
     }

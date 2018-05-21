@@ -29,7 +29,7 @@
                   <p>@username</p>
                 </div>
                 <ul class="nav nav-pills nav-stacked">
-                  <li class="active"><a href="#"> <i class="fa fa-user"></i> News feed</a></li>
+                  <li class="active"><a href="#"> <i class="fa fa-globe"></i> News feed</a></li>
                   <li>
                     <a href="#"> 
                       <i class="fa fa-envelope"></i> Messages 
@@ -57,7 +57,7 @@
             <div class="widget">
               <div class="widget-body">
                 <ul class="nav nav-pills nav-stacked">
-                  <li><a href="#"> <i class="fa fa-globe"></i> Pages</a></li>
+                  <li><a href="/profile/classes"> <i class="fa fa-globe"></i> Classes</a></li>
                   <li><a href="#"> <i class="fa fa-gamepad"></i> Games</a></li>
                   <li><a href="#"> <i class="fa fa-puzzle-piece"></i> Ads</a></li>
                   <li><a href="#"> <i class="fa fa-home"></i> Markerplace</a></li>

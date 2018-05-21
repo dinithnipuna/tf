@@ -64,3 +64,9 @@ Route::post('/profile/edit', [
 	'uses' => 'ProfileController@postEdit',
 	'middleware' => ['auth'],
 ]);
+
+Route::get('/profile/classes', [
+	'uses' => 'ProfileController@getClasses',
+	'as' => 'profile.classes',
+	'middleware' => ['auth'],
+]);
