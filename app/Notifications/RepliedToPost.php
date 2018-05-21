@@ -6,9 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Carbon\Carbon;
+use Auth;
 
-class RepliedThread extends Notification
+class RepliedToPost extends Notification
 {
     use Queueable;
 
@@ -36,21 +36,6 @@ class RepliedThread extends Notification
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
-                    ->line('Thank you for using our application!');
-    }
-
-
-    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -59,7 +44,8 @@ class RepliedThread extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'post' => $this->post
+            'post' => $this->post,
+            'user' => Auth::user(),
         ];
     }
 

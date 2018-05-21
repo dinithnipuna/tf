@@ -65,4 +65,9 @@ class HomeController extends Controller
 
         return redirect()->route('home');
     }
+
+    public function markAsRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+    }
 }

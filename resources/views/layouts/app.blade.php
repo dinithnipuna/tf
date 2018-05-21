@@ -46,15 +46,22 @@ $.ajaxSetup({
    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
 });
 
+function markNotificationAsRead(count){
+    if(count > 0){
+        $.get('/markAsRead');
+    }
+    
+}
+
 
 $(document).ready(function() {
-      $( "#autocomplete" ).autocomplete({
+  $( "#autocomplete" ).autocomplete({
       source: "{!! route('search.data') !!}",
       minLength: 2,
       select: function( event, ui ) {
         window.location.href = ui.item.route
       }
-    });
+  });
  
 });
 

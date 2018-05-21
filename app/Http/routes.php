@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::resource('/notebooks', 'NotebookController');
 	Route::get('/notes/{notebook}/create', ['uses' =>'NoteController@createNote', 'as' => 'notes.new']);
 	Route::resource('/notes', 'NoteController');
+
+	Route::get('/markAsRead', ['uses' =>'HomeController@markAsRead', 'as' => 'markAsRead']);
 });
 
 Route::auth();

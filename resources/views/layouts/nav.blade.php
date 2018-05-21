@@ -18,15 +18,17 @@
             @endif
                 <li class="actives"><a href="{{ route('profile',['id' => Auth::user()->id]) }}">Profile</a></li>
             <li><a href="/">Home</a></li>
-             <li class="dropdown">
+             <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{ Auth::user()->unreadNotifications()->count()}})">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="fa fa-globe"></i> <span class="label label-danger">{{ Auth::user()->unreadNotifications()->count()}}</span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @foreach (Auth::user()->unreadNotifications as $notification)
-                                    <li><a href="{{ route('profile.edit') }}">{{ $notification->data['user']['name'] }}</a></li>
-                                @endforeach
+                                @forelse (Auth::user()->unreadNotifications as $notification)
+                                    <li><a href="{{ route('posts.show',$notification->data['post']['id']) }}">{{ $notification->data['user']['name']}} commented on your post <strong>{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</strong></a></li>
+                                @empty
+                                    <li><a href="#">No unread Notifications</a></li>
+                                @endforelse
                             </ul>
                         </li>
             <!-- Authentication Links -->
