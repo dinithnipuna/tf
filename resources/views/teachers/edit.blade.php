@@ -10,7 +10,6 @@
 @endsection
 
 @section('content')
- <div class="container-fluid">
   	<div class="row">
       <div class="col">
             <div class="panel panel-default">
@@ -60,5 +59,4 @@
           </div><!-- /.box -->
       </div>
     </div>
-</div>
 @endsection

@@ -103,11 +103,23 @@ class User extends Authenticatable
     }
 
     public function classesOfMine(){
-        return $this->belongsToMany('App\User','class_user','user_id','class_id');
+        return $this->belongsToMany('App\Cls','class_user','user_id','class_id');
     }
 
     public function classes(){
         return $this->classesOfMine()->wherePivot('accepted',true)->get();
+    }
+
+    public function classOf(){
+        return $this->belongsToMany('App\Cls','class_user','user_id','class_id');
+    }
+
+    public function addClass(Cls $class){
+        return $this->classOf()->attach($class->id,['accepted' => true]);
+    }
+
+    public function deleteClass(Cls $class){
+        return $this->classOf()->detach($class->id);
     }
 
     public function isJoinWithClass(Cls $class){
@@ -117,4 +129,13 @@ class User extends Authenticatable
     public function notebooks(){
         return $this->hasMany('App\Notebook');
     }
+
+    public function assignments(){
+        return $this->hasMany('App\Assignment');
+    }
+
+    public function clses(){
+        return $this->hasMany('App\Cls');
+    }
+
 }

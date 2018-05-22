@@ -1,9 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
-    <div class="container-fluid">
-
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-body"> 
@@ -55,12 +52,8 @@
                       @endforeach
                       </tbody>
                     </table>
-                  </div>
-
-             
+                  </div>             
                 </div>
             </div>
         </div>
-    </div>
-
 @endsection

@@ -20,7 +20,15 @@ class Cls extends Model
 		return $this->belongsTo('App\User');
 	}
 
-	 public function posts(){
+	public function posts(){
         return $this->hasMany('App\Post','class_id');
+    }
+
+    public function assignments(){
+        return $this->hasMany('App\Assignment','class_id');
+    }
+
+    public function students(){
+        return $this->belongsToMany('App\User','class_user','class_id','user_id');
     }
 }

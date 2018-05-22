@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-<div class="container page-content">
       <div class="row">
       <h4><i class="fa fa-file-alt m-r-10"></i> Notes</h4>
         <ol class="breadcrumb">
@@ -40,5 +39,4 @@
             </div>
         </div>
       </div>
-    </div>
 @endsection

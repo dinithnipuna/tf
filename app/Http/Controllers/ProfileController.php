@@ -155,11 +155,45 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
+
+    public function joinClass($classId)
+    {
+        $class = Cls::find($classId);
+
+        if(!$class){
+            return redirect()->route('home');
+        }
+
+        Auth::user()->addClass($class);
+
+        return redirect()->back();
+    }
+
+     public function leaveClass($classId)
+    {
+        $class = Cls::find($classId);
+
+        if(!$class){
+            return redirect()->route('home');
+        }
+
+        Auth::user()->deleteClass($class);
+
+        return redirect()->back();
+    }
+
     public function getClasses()
     {
         $classes = Auth::user()->classes();
         dd($classes);
         return view('profile.classes')
+                    ->withClasses($classes);
+    }
+
+    public function getAssignments()
+    {
+        $classes = Auth::user()->classes();
+        return view('profile.assignments')
                     ->withClasses($classes);
     }
 }

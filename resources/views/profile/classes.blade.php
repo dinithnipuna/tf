@@ -3,7 +3,6 @@
 @section('title', 'Teacher Finder')
 
 @section('content')
-<div class="container page-content">
       <div class="row">
       <h4><i class="fa fa-user m-r-10"></i> Profile</h4>
         <ol class="breadcrumb">
@@ -80,5 +79,4 @@
             </div>
         </div>
       </div>
-    </div>
 @endsection

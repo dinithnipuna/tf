@@ -14,7 +14,6 @@
 
 @section('content')
     <!-- Begin page content -->
-    <div class="container page-content">
       <div class="row" id="user-profile">
         <div class="col-md-4 col-xs-12">
           <div class="row-xs">
@@ -570,7 +569,6 @@
           </div>
         </div>
       </div>
-    </div>
 
     <!-- Online users sidebar content-->
     <div class="chat-sidebar focus">

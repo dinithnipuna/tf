@@ -37,11 +37,16 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('/posts/{postId}/like', ['uses' =>'PostController@getLike', 'as' => 'posts.like']);
 
+	Route::get('/classes/join/{classId}', ['uses' =>'ProfileController@joinClass', 'as' => 'classes.join']);
+	Route::get('/classes/leave/{classId}', ['uses' =>'ProfileController@leaveClass', 'as' => 'classes.leave']);
+
 	Route::resource('/notebooks', 'NotebookController');
 	Route::get('/notes/{notebook}/create', ['uses' =>'NoteController@createNote', 'as' => 'notes.new']);
 	Route::resource('/notes', 'NoteController');
 
 	Route::get('/markAsRead', ['uses' =>'HomeController@markAsRead', 'as' => 'markAsRead']);
+
+	Route::resource('/assignments', 'AssignmentController');
 });
 
 Route::auth();
@@ -70,5 +75,11 @@ Route::post('/profile/edit', [
 Route::get('/profile/classes', [
 	'uses' => 'ProfileController@getClasses',
 	'as' => 'profile.classes',
+	'middleware' => ['auth'],
+]);
+
+Route::get('/profile/assignments', [
+	'uses' => 'ProfileController@getAssignments',
+	'as' => 'profile.assignments',
 	'middleware' => ['auth'],
 ]);

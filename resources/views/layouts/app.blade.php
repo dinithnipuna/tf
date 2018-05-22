@@ -7,9 +7,12 @@
   <body class="animated fadeIn">
 
     @include('layouts.nav')
-
+    
     <!-- Begin page content -->
-    @yield('content')
+    <div class="container page-content">
+      @include('layouts.alert')
+      @yield('content')
+    </div>
 
     <footer class="footer">
       <div class="container">

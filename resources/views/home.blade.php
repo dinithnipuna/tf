@@ -10,7 +10,6 @@
 
 
 @section('content')
-<div class="container page-content ">
       <div class="row">
         <!-- left links -->
         <div class="col-md-3">
@@ -29,7 +28,7 @@
                   <p>@username</p>
                 </div>
                 <ul class="nav nav-pills nav-stacked">
-                  <li class="active"><a href="#"> <i class="fa fa-globe"></i> News feed</a></li>
+               {{--    <li class="active"><a href="#"> <i class="fa fa-globe"></i> News feed</a></li>
                   <li>
                     <a href="#"> 
                       <i class="fa fa-envelope"></i> Messages 
@@ -37,8 +36,20 @@
                     </a>
                   </li>
                   <li><a href="#"> <i class="fa fa-calendar"></i> Events</a></li>
-                  <li><a href="#"> <i class="fa fa-image"></i> Photos</a></li>
+                  <li><a href="#"> <i class="fa fa-image"></i> Photos</a></li> --}}
+                  @role(['teacher'])
+                  <li>
+                    <a href="/assignments"> 
+                      <i class="fa fa-file"></i> Assignment Board
+                    </a>
+                  </li>
+                  @endrole
                   @role(['student'])
+                  <li>
+                    <a href="/profile/assignments"> 
+                      <i class="fa fa-file"></i> Assignment Board
+                    </a>
+                  </li>
                   <li>
                     <a href="/notebooks"> 
                       <i class="fa fa-book"></i> Notebooks
@@ -302,5 +313,4 @@
           </div><!-- End people yout may know --> 
         </div><!-- end right posts -->
       </div>
-    </div>
 @endsection

@@ -13,19 +13,23 @@
         <div id="navbar" class="navbar-collapse collapse">
 
           <ul class="nav navbar-nav navbar-right">
-            @if (Auth::user()->hasRole(['admin', 'manager', 'teacher']))
-                <li><a href="/admin">Admin</a></li>
-            @endif
                 <li class="actives"><a href="{{ route('profile',['id' => Auth::user()->id]) }}">Profile</a></li>
             <li><a href="/">Home</a></li>
              <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{ Auth::user()->unreadNotifications()->count()}})">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa fa-globe"></i> <span class="label label-danger">{{ Auth::user()->unreadNotifications()->count()}}</span>
+                                <i class="fa fa-globe"></i> 
+                                @if(Auth::user()->unreadNotifications()->count() > 0)
+                                <span class="label label-danger">{{ Auth::user()->unreadNotifications()->count()}}</span>
+                                @endif
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
                                 @forelse (Auth::user()->unreadNotifications as $notification)
+                                    @if($notification->type == "App\Notifications\RepliedToPost")
                                     <li><a href="{{ route('posts.show',$notification->data['post']['id']) }}">{{ $notification->data['user']['name']}} commented on your post <strong>{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</strong></a></li>
+                                    @else
+                                    <li><a href="{{ route('posts.show',$notification->data['assignment']['id']) }}">{{ $notification->data['user']['name']}} add New Assignment <strong>{{ $notification->data['assignment']['title'] }} on Class {{ $notification->data['class']['name'] }}</strong></a></li>
+                                    @endif
                                 @empty
                                     <li><a href="#">No unread Notifications</a></li>
                                 @endforelse
@@ -47,6 +51,9 @@
                                          <li><a href="{{ route('institutes.show',['id' => $institute->id]) }}"><i class="fa fa-btn fa-sign-out"></i>{{$institute->name}}</a></li>
                                     @endforeach
                                 @endif --}}
+                                @if (Auth::user()->hasRole(['admin', 'manager', 'teacher']))
+                                    <li><a href="/admin"><i class="fa fa-btn fa-gear"></i> Admin Panel</a></li>
+                                @endif
                                 <li><a href="{{ route('profile.edit') }}"><i class="fa fa-btn fa-pencil"></i> Update Profile</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a></li>
                             </ul>

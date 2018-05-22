@@ -3,7 +3,6 @@
 @section('title', 'Teacher Finder')
 
 @section('content')
-<div class="container page-content">
       <div class="row">
         <div class="col">
           <div class="widget">
@@ -57,5 +56,4 @@
             </div>
         </div>
       </div>
-    </div>
 @endsection

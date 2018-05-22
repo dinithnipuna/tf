@@ -13,8 +13,6 @@
 @endsection
 
 @section('content')
-    <!-- Begin page content -->
-    <div class="container page-content">
       <div class="row" id="user-profile">
         <div class="col-md-4 col-xs-12">
           <div class="row-xs">
@@ -220,9 +218,16 @@
                             </div>
                             @if(!Auth::user()->isJoinWithClass($class))
                                 <div class="type">
-                                    <a href="#" class="btn btn-warning">
+                                    <a href="{{ route('classes.join',['classId' => $class->id]) }}" class="btn btn-warning">
                                         <i class="fa fa-plus"></i>
                                         Join Class
+                                    </a>
+                                </div>
+                            @else
+                                <div class="type">
+                                    <a href="{{ route('classes.leave',['classId' => $class->id]) }}" class="btn btn-danger">
+                                        <i class="fa fa-close"></i>
+                                        Leave Class
                                     </a>
                                 </div>
                             @endif                                  
@@ -279,7 +284,6 @@
           </div>
         </div>
       </div>
-    </div>
 
     {{-- <!-- Online users sidebar content-->
     <div class="chat-sidebar focus">
