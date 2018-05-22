@@ -2,6 +2,17 @@
 
 @section('title', 'Teacher Finder')
 
+@section('script') 
+  <!-- TinyMCE -->
+  <script src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
+  <script>
+    tinymce.init({
+      selector:'textarea',
+      file_browser_callback_types: 'file image media'
+    });
+  </script>
+@endsections
+
 @section('content')
       <div class="row">
       <h4><i class="fa fa-book m-r-10"></i> Assignments</h4>

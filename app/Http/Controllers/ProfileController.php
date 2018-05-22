@@ -184,8 +184,7 @@ class ProfileController extends Controller
 
     public function getClasses()
     {
-        $classes = Auth::user()->classes();
-        dd($classes);
+        $classes = Auth::user()->clses;
         return view('profile.classes')
                     ->withClasses($classes);
     }
