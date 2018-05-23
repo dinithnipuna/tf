@@ -21,8 +21,8 @@
               <div class="profile-status">
                 <i class="fa fa-check-circle"></i> Online
               </div>
-              @if(Auth::user()->avatar != null)
-                <img src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
+              @if($user->avatar != null)
+                <img src="{{asset('images/users/'. $user->avatar)}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
               @else
                 <img src="{{ asset('/images/users/default.png') }}" alt="" class="profile-img img-responsive center-block show-in-modal">
               @endif
@@ -36,7 +36,7 @@
               </div>
               
               <div class="profile-message-btn center-block text-center">
-                <a href="#" class="btn btn-azure">
+                <a href="/messages/{{ $user->id }}/create" class="btn btn-azure">
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a>

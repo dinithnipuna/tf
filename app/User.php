@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Notifications\Notifiable;
 use App\Post;
 
@@ -11,6 +12,7 @@ class User extends Authenticatable
 {
     use LaratrustUserTrait;
     use Notifiable;
+    use Messagable;
     /**
      * The attributes that are mass assignable.
      *
@@ -136,6 +138,23 @@ class User extends Authenticatable
 
     public function clses(){
         return $this->hasMany('App\Cls');
+    }
+
+
+    public function messageOfMine(){
+        return $this->belongsToMany('App\User','private_messages','sender_id','receiver_id');
+    }
+
+    public function messageOf(){
+        return $this->belongsToMany('App\User','private_messages','receiver_id','sender_id');
+    }
+
+    public function pms(){
+        return $this->messageOf()->wherePivot('read',false)->get();
+    }
+
+    public function messages(){
+        return $this->belongsToMany('App\PrivateMessage','user_id','receiver_id');
     }
 
 }

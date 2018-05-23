@@ -36,7 +36,7 @@
               </div>
               
               <div class="profile-message-btn center-block text-center">
-                <a href="#" class="btn btn-azure">
+                <a href="/messages/{{ $user->id }}/create" class="btn btn-azure">
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a>

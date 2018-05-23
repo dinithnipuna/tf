@@ -29,14 +29,15 @@
                 </div>
                 <ul class="nav nav-pills nav-stacked">
                {{--    <li class="active"><a href="#"> <i class="fa fa-globe"></i> News feed</a></li>
+                  
+                  <li><a href="#"> <i class="fa fa-calendar"></i> Events</a></li>
+                  <li><a href="#"> <i class="fa fa-image"></i> Photos</a></li> --}}
                   <li>
-                    <a href="#"> 
+                    <a href="/messages"> 
                       <i class="fa fa-envelope"></i> Messages 
                       <span class="label label-info pull-right r-activity">9</span>
                     </a>
                   </li>
-                  <li><a href="#"> <i class="fa fa-calendar"></i> Events</a></li>
-                  <li><a href="#"> <i class="fa fa-image"></i> Photos</a></li> --}}
                   @role(['teacher'])
                   <li>
                     <a href="/assignments"> 

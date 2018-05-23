@@ -15,6 +15,7 @@
           <ul class="nav navbar-nav navbar-right">
                 <li class="actives"><a href="{{ route('profile',['id' => Auth::user()->id]) }}">Profile</a></li>
             <li><a href="/">Home</a></li>
+            <li><a href="/messages"><i class="fa fa-envelope"></i>  @include('messenger.unread-count')</a></li>
              <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{ Auth::user()->unreadNotifications()->count()}})">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="fa fa-globe"></i> 

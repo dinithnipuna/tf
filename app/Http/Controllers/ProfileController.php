@@ -195,4 +195,10 @@ class ProfileController extends Controller
         return view('profile.assignments')
                     ->withClasses($classes);
     }
+
+    public function getMessages()
+    {
+        dd(Auth::user()->messages);
+        return view('profile.messages');
+    }
 }

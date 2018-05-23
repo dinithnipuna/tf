@@ -150,6 +150,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
+        Cmgmyr\Messenger\MessengerServiceProvider::class,
         /*
          * Application Service Providers...
          */
