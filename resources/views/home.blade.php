@@ -5,7 +5,11 @@
 @section('script') 
   <!-- TinyMCE -->
   <script src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
-  <script>tinymce.init({ selector:'textarea' });</script>
+  <script>
+    tinymce.init({ 
+      selector:'textarea',
+      plugins: "code",
+    });</script>
 @endsection
 
 
@@ -182,68 +186,43 @@
           <!-- Friends activity -->
           <div class="widget">
             <div class="widget-header">
-              <h3 class="widget-caption">Friends activity</h3>
+              <h3 class="widget-caption">Users activity</h3>
             </div>
             <div class="widget-body bordered-top bordered-sky">
               <div class="card">
                 <div class="content">
                    <ul class="list-unstyled team-members">
-                    <li>
-                      <div class="row">
-                        <div class="col-xs-3">
-                          <div class="avatar">
-                              <img src="img/Friends/woman-2.jpg" alt="img" class="img-circle img-no-padding img-responsive">
-                          </div>
-                        </div>
-                        <div class="col-xs-9">
-                          <b><a href="#">Hillary Markston</a></b> shared a 
-                          <b><a href="#">publication</a></b>. 
-                          <span class="timeago" >5 min ago</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="row">
-                        <div class="col-xs-3">
-                          <div class="avatar">
-                              <img src="img/Friends/woman-3.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                          </div>
-                        </div>
-                        <div class="col-xs-9">
-                          <b><a href="#">Leidy marshel</a></b> shared a 
-                          <b><a href="#">publication</a></b>. 
-                          <span class="timeago" >5 min ago</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="row">
-                        <div class="col-xs-3">
-                          <div class="avatar">
-                              <img src="img/Friends/woman-4.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                          </div>
-                        </div>
-                        <div class="col-xs-9">
-                          <b><a href="#">Presilla bo</a></b> shared a 
-                          <b><a href="#">publication</a></b>. 
-                          <span class="timeago" >5 min ago</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="row">
-                        <div class="col-xs-3">
-                            <div class="avatar">
-                                <img src="img/Friends/woman-4.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                            </div>
-                        </div>
-                        <div class="col-xs-9">
-                          <b><a href="#">Martha markguy</a></b> shared a 
-                          <b><a href="#">publication</a></b>. 
-                          <span class="timeago" >5 min ago</span>
-                        </div>
-                      </div>
-                    </li>
+                   @forelse (Auth::user()->notifications as $notification)
+                                     <li>
+                                      <div class="row">
+                                        <div class="col-xs-3">
+                                          <div class="avatar">
+                                              @if($notification->data['user']['avatar'] != null)
+                                                <img src="{{asset('images/users/'. $notification->data['user']['avatar'])}}" alt="img" class="img-circle img-no-padding img-responsive">
+                                              @else
+                                                <img src="{{ asset('images/users/default.png')}}" alt="img" class="img-circle img-no-padding img-responsive">
+                                              @endif  
+                                          </div>
+                                        </div>
+                                        @if($notification->type == "App\Notifications\RepliedToPost")
+                                        <div class="col-xs-9">
+                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> commented on your post 
+                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> 
+                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        @else
+                                        <div class="col-xs-9">
+                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> add New Assignment 
+                                          <b><a href="{{ route('assignments.show',['id' => $notification->data['assignment']['id']]) }}">{{ $notification->data['assignment']['title'] }}</a></b>  on Class <b><a href="{{ route('classes.show',['id' => $notification->data['class']['id']]) }}">{{ $notification->data['class']['name'] }}</a></b> 
+                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        @endif
+                                      </div>
+                                    </li>
+                                    
+                                @empty
+                                    <li><a href="#">No unread Notifications</a></li>
+                                @endforelse
                   </ul>         
                 </div>
               </div>

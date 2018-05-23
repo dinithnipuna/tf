@@ -68,7 +68,6 @@ $(document).ready(function() {
  
 });
 
-
 </script>
 
 <!-- Mirrored from demos.bootdey.com/dayday/home.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Feb 2018 18:00:58 GMT -->
