@@ -14,10 +14,6 @@ use Session;
 
 class AssignmentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -60,9 +56,9 @@ class AssignmentController extends Controller
                 'class_id'=> $request->input('class_id'),
         ]);
 
-        $class = Cls::find($request->class_id);
+        $cls = Cls::find($request->class_id);
 
-        Notification::send($class->students, new NewAssignment($assignment,$class));
+        Notification::send($cls->students, new NewAssignment($assignment,$cls));
 
         Session::flash('success','The Assignment was successfully created!');
 

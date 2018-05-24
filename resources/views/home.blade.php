@@ -2,17 +2,6 @@
 
 @section('title', 'Teacher Finder')
 
-@section('script') 
-  <!-- TinyMCE -->
-  <script src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
-  <script>
-    tinymce.init({ 
-      selector:'textarea',
-      plugins: "code",
-    });</script>
-@endsection
-
-
 @section('content')
       <div class="row">
         <!-- left links -->
@@ -96,7 +85,7 @@
                   <div class="box profile-info n-border-top">
                     <form role="form" action="{{route('posts.store')}}" method="POST">
                         {{csrf_field()}} 
-                        <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body"></textarea>
+                        <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body" id="postBody"></textarea>
                     
                         <div class="box-footer box-form">
                             <button type="submit" class="btn btn-azure pull-right">Post</button>
@@ -127,15 +116,31 @@
                                   <span class="username"><a href="{{ route('profile',['id' => $post->user->id]) }}">{{ $post->user->name }}</a></span>
                                   <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                 </div>
+
+                                @if($post->user->id == Auth::user()->id)
+
+                                <div class="box-tools">
+                                  <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                      <i class="fa fa-angle-down"></i>
+                                      <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                      <li><a href="#" data-toggle="modal" data-target="#editPost" data-postId="{{ $post->id }}">Edit Post</a></li>
+                                      <li><a href="#">Delete Post</a></li>
+                                      <li class="divider"></li>
+                                      <li><a href="#">Hide Post</a></li>
+                                  </ul>
+                                </div>
+                                @endif
                               </div>
 
                               <div class="box-body" style="display: block;">
                                 
-                                <p>{!! $post->body !!}</p>
+                                <div id="post-body-{{ $post->id }}">{!! $post->body !!}</div>
 
                                 <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
                                 <a href="{{route('posts.like',['postId' => $post->id])}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</a>
-                                <span class="pull-right text-muted">127 likes - 3 comments</span>
+                                <span class="pull-right text-muted">127 likes - {{ $post->replies()->count()}} comments</span>
                               </div>
                               <div class="box-footer box-comments" style="display: block;">
                               @foreach($post->replies as $reply)
@@ -207,13 +212,19 @@
                                         @if($notification->type == "App\Notifications\RepliedToPost")
                                         <div class="col-xs-9">
                                           <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> commented on your post 
-                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> 
+                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
+                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        @elseif($notification->type == "App\Notifications\NewPost")
+                                          <div class="col-xs-9">
+                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> shared new post 
+                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
                                           <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
                                         </div>
                                         @else
                                         <div class="col-xs-9">
                                           <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> add New Assignment 
-                                          <b><a href="{{ route('assignments.show',['id' => $notification->data['assignment']['id']]) }}">{{ $notification->data['assignment']['title'] }}</a></b>  on Class <b><a href="{{ route('classes.show',['id' => $notification->data['class']['id']]) }}">{{ $notification->data['class']['name'] }}</a></b> 
+                                          <b><a href="{{ route('assignments.show',['id' => $notification->data['assignment']['id']]) }}">{{ $notification->data['assignment']['title'] }}</a></b>  on Class <b><a href="{{ route('classes.show',['id' => $notification->data['class']['id']]) }}">{{ $notification->data['class']['name'] }}</a></b> -
                                           <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
                                         </div>
                                         @endif
@@ -221,7 +232,7 @@
                                     </li>
                                     
                                 @empty
-                                    <li><a href="#">No unread Notifications</a></li>
+                                    <li><a href="#">No Users activity</a></li>
                                 @endforelse
                   </ul>         
                 </div>
@@ -293,4 +304,86 @@
           </div><!-- End people yout may know --> 
         </div><!-- end right posts -->
       </div>
+
+      <!-- Edit Product Modal -->
+<div class="modal fade" id="editPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <form role="form" action="#" method="POST" id='editForm'>
+    {{csrf_field()}}   
+    {{ method_field('PUT') }}    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" value="" name="post_id" id="post_id">
+        <div class="form-group">
+          <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body" id="body"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="submit" class="btn btn-primary">Update Post</button>
+      </div>
+       </form>
+    </div>
+  </div>
+</div>
+@endsection
+
+@section('script') 
+  <!-- TinyMCE -->
+  <script src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
+  <script>
+    $.ajaxSetup({
+            headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+    });
+
+    tinymce.init({ 
+      selector:'textarea',
+      plugins: "code media",
+    });
+  
+    $(function() {
+      $('#editPost').on('shown.bs.modal', function (event) {
+          var modal = $(this);
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var postid = button.data('postid') // Extract info from data-* attributes
+
+          $.get('/posts/'+ postid +'/edit', function(data) {
+              tinyMCE.remove();
+              modal.find('.modal-body #post_id').val(data.id);
+              modal.find('.modal-body #body').val(data.body);
+              tinymce.init({ 
+                selector:'textarea',
+                plugins: "code media",
+                setup: function (editor) {
+                  editor.on('change', function () {
+                      tinymce.triggerSave();
+                  });
+                }
+              });
+          });
+      });
+
+      $( "#editForm" ).submit(function( event ) {
+        event.preventDefault();
+
+        $.post('{{ route('posts.update',1) }}', $.param($(this).serializeArray()), function(data) {
+              $('#editPost').modal('hide'); 
+              $('#post-body-'+data.id).html(data.body);      
+        });
+      });
+    });
+
+    // Prevent Bootstrap dialog from blocking focusin
+$(document).on('focusin', function(e) {
+  if ($(e.target).closest(".mce-window").length) {
+    e.stopImmediatePropagation();
+  }
+});
+
+
+  </script>
 @endsection

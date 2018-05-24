@@ -26,7 +26,7 @@
               @foreach($assignments as $assignment)
                   <tr>
                   <td>{{ $assignment->title }}</td>
-                  <td>{{ $assignment->class->name }}</td>
+                  <td>{{ $assignment->cls->name }}</td>
                   <td>{{ $assignment->created_at }}</td>
                   <td style="width: 20%;">
                     <a href="{{route('assignments.show', $assignment->id)}}" class="table-link success">

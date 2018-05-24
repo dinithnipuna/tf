@@ -14,7 +14,7 @@ class Assignment extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function class(){
-        return $this->belongsTo('App\Cls');
+    public function cls(){
+        return $this->belongsTo('App\Cls','class_id');
     }
 }

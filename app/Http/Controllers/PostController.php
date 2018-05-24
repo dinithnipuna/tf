@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Post;
 use Auth;
 use App\Notifications\RepliedToPost;
+use App\Notifications\NewPost;
+use Notification;
 
 class PostController extends Controller
 {
@@ -19,20 +21,41 @@ class PostController extends Controller
         ]);
 
         if($request->post_type){
-            Auth::user()->posts()->create([
+            $post = Auth::user()->posts()->create([
                 'body'=> $request->input('body'),
                 'post_type' => $request->input('post_type'),
                 'class_id' => $request->input('class_id'),
             ]);
         }else{
-            Auth::user()->posts()->create([
+            $post = Auth::user()->posts()->create([
                 'body'=> $request->input('body'),
             ]);
         }
 
-        
+        Notification::send(Auth::user()->friends(), new NewPost($post));
 
         return redirect()->back();
+    }
+
+    public function edit($id)
+    {
+        $post = Post::find($id);
+        return $post;
+    }
+
+    public function update(Request $request)
+    {
+        $this->validateWith([
+            'body' => 'required',
+        ]);
+
+        $post = Post::find($request->post_id);
+
+        $post->update([
+                'body'=> $request->input('body'),
+        ]);
+
+        return $post;        
     }
 
     public function reply(Request $request, $postId)

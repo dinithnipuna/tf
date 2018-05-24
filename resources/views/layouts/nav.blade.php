@@ -28,6 +28,8 @@
                                 @forelse (Auth::user()->unreadNotifications as $notification)
                                     @if($notification->type == "App\Notifications\RepliedToPost")
                                     <li><a href="{{ route('posts.show',$notification->data['post']['id']) }}">{{ $notification->data['user']['name']}} commented on your post <strong>{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</strong></a></li>
+                                    @elseif($notification->type == "App\Notifications\NewPost")
+                                    <li><a href="{{ route('posts.show',$notification->data['post']['id']) }}">{{ $notification->data['user']['name']}} shared new post <strong>{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</strong></a></li>
                                     @else
                                     <li><a href="{{ route('posts.show',$notification->data['assignment']['id']) }}">{{ $notification->data['user']['name']}} add New Assignment <strong>{{ $notification->data['assignment']['title'] }} on Class {{ $notification->data['class']['name'] }}</strong></a></li>
                                     @endif
