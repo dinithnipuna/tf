@@ -21,12 +21,8 @@
               <div class="profile-status">
                 <i class="fa fa-check-circle"></i> Online
               </div>
-              @if($user->avatar != null)
-                <img src="{{asset('images/users/'. $user->avatar)}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
-              @else
-                <img src="{{ asset('/images/users/default.png') }}" alt="" class="profile-img img-responsive center-block show-in-modal">
-              @endif
-              
+              <img src="{{asset('images/users/'. $user->getAvatar())}}" alt="User profile picture" class="profile-img img-responsive center-block show-in-modal">
+
               <div class="profile-details">
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-user"></i>Following: <span>456</span></li>
@@ -136,11 +132,7 @@
                                   <div class="box box-widget">
                                       <div class="box-header with-border">
                                         <div class="user-block">
-                                          @if($post->user->avatar != null)
-                                            <img class="img-circle" src="{{asset('images/users/'. $post->user->avatar)}}" alt="User Image">
-                                          @else
-                                             <img class="img-circle" src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                          @endif
+                                          <img class="img-circle" src="{{asset('images/users/'. $post->user->getAvatar())}}" alt="User Image">
                                           <span class="username"><a href="#">{{ $post->user->name }}</a></span>
                                           <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                         </div>
@@ -148,7 +140,7 @@
 
                                       <div class="box-body" style="display: block;">
                                         
-                                        <p>{{ $post->body }}</p>
+                                        {!! $post->body !!}
           
                                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
                                         <a href="{{route('posts.like',['postId' => $post->id])}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</a>
@@ -157,11 +149,7 @@
                                       <div class="box-footer box-comments" style="display: block;">
                                       @foreach($post->replies as $reply)
                                         <div class="box-comment">
-                                          @if($reply->user->avatar != null)
-                                            <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->avatar)}}" alt="User Image">
-                                          @else
-                                             <img class="img-circle img-sm" src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                          @endif
+                                          <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->getAvatar())}}" alt="User Image">
                                           <div class="comment-text">
                                             <span class="username">
                                             {{ $reply->user->name }}
@@ -174,11 +162,7 @@
                                       </div>
                                       <div class="box-footer" style="display: block;">
                                         <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                          @if(Auth::user()->avatar != null)
-                                            <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User Image">
-                                          @else
-                                             <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
-                                          @endif
+                                          <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->getAvatar())}}" alt="User Image">
                                           <div class="img-push">
                                             {{csrf_field()}}
                                             <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -201,11 +185,7 @@
                                 @if($friend->hasRole('manager'))
                                     <li class="col-md-6">
                                       <div class="img">
-                                        @if($friend->avatar != null)
-                                          <img src="{{asset('images/users/'. $friend->avatar)}}" alt="User Image">
-                                        @else
-                                           <img src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                        @endif
+                                      <img src="{{asset('images/users/'. $friend->getAvatar())}}" alt="User Image">
                                       </div>
                                       <div class="details">
                                         <div class="name">
@@ -236,11 +216,7 @@
                               @if($friend->hasRole('teacher'))
                                   <li class="col-md-6">
                                     <div class="img">
-                                      @if($friend->avatar != null)
-                                          <img src="{{asset('images/users/'. $friend->avatar)}}" alt="User Image">
-                                        @else
-                                           <img src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                        @endif
+                                    <img src="{{asset('images/users/'. $friend->getAvatar())}}" alt="User Image">
                                     </div>
                                     <div class="details">
                                       <div class="name">

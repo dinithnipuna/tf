@@ -20,8 +20,8 @@ class Cls extends Model
 		return $this->belongsTo('App\User');
 	}
 
-	public function posts(){
-        return $this->hasMany('App\Post','class_id');
+    public function posts(){
+        return $this->morphMany('App\Post','postable');
     }
 
     public function assignments(){
@@ -30,5 +30,9 @@ class Cls extends Model
 
     public function students(){
         return $this->belongsToMany('App\User','class_user','class_id','user_id');
+    }
+
+    public function topics(){
+        return $this->hasMany('App\Topic','class_id');
     }
 }

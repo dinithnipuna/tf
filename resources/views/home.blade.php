@@ -11,11 +11,7 @@
               <div class="widget-body">
                 <div class="user-heading round">
                   <a href="#">
-                    @if(Auth::user()->avatar != null)
-                      <img src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture">
-                    @else
-                      <img src="{{ asset('images/users/default.png')}}" alt="User profile picture">
-                    @endif
+                      <img src="{{ asset('images/users/'. Auth::user()->getAvatar()) }}" alt="User profile picture">
                   </a>
                   <h1>{{ Auth::user()->name }}</h1>
                   <p>@username</p>
@@ -28,7 +24,7 @@
                   <li>
                     <a href="/messages"> 
                       <i class="fa fa-envelope"></i> Messages 
-                      <span class="label label-info pull-right r-activity">9</span>
+                      {{-- <span class="label label-info pull-right r-activity">9</span> --}}
                     </a>
                   </li>
                   @role(['teacher'])
@@ -47,7 +43,7 @@
                   <li>
                     <a href="/notebooks"> 
                       <i class="fa fa-book"></i> Notebooks
-                      <span class="label label-info pull-right r-activity">{{ Auth::user()->notebooks()->count() }}</span>
+                      {{-- <span class="label label-info pull-right r-activity">{{ Auth::user()->notebooks()->count() }}</span> --}}
                     </a>
                   </li>
                   @endrole
@@ -62,11 +58,8 @@
             <div class="widget">
               <div class="widget-body">
                 <ul class="nav nav-pills nav-stacked">
-                  <li><a href="/profile/classes"> <i class="fa fa-globe"></i> Classes</a></li>
-                  <li><a href="#"> <i class="fa fa-gamepad"></i> Games</a></li>
-                  <li><a href="#"> <i class="fa fa-puzzle-piece"></i> Ads</a></li>
-                  <li><a href="#"> <i class="fa fa-home"></i> Markerplace</a></li>
-                  <li><a href="#"> <i class="fa fa-users"></i> Groups</a></li>
+                  <li><a href="/profile/classes"> <i class="fa fa-pencil-square-o"></i> Classes</a></li>
+                  <li><a href="/forums"> <i class="fa fa-comments"></i> Forums</a></li>
                 </ul>
               </div>
             </div>
@@ -107,11 +100,7 @@
                           <div class="box box-widget">
                               <div class="box-header with-border">
                                 <div class="user-block">
-                                @if($post->user->avatar != null)
-                                  <img class="img-circle" src="{{asset('images/users/'. $post->user->avatar)}}" alt="User Image">
-                                @else
-                                   <img class="img-circle" src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                @endif
+                                  <img class="img-circle" src="{{asset('images/users/'. $post->user->getAvatar())}}" alt="User Image">
                                  
                                   <span class="username"><a href="{{ route('profile',['id' => $post->user->id]) }}">{{ $post->user->name }}</a></span>
                                   <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
@@ -145,11 +134,7 @@
                               <div class="box-footer box-comments" style="display: block;">
                               @foreach($post->replies as $reply)
                                 <div class="box-comment">
-                                  @if($reply->user->avatar != null)
-                                    <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->avatar)}}" alt="User Image">
-                                  @else
-                                     <img class="img-circle img-sm" src="{{ asset('/images/users/default.png') }}" alt="User Image">
-                                  @endif
+                                    <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->getAvatar())}}" alt="User Image">
                                   <div class="comment-text">
                                     <span class="username">
                                     {{ $reply->user->name }}
@@ -162,11 +147,7 @@
                               </div>
                               <div class="box-footer" style="display: block;">
                                 <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                  @if(Auth::user()->avatar != null)
-                                    <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->avatar)}}" alt="User Image">
-                                  @else
-                                     <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
-                                  @endif
+                                    <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->getAvatar())}}" alt="User Image">
                                   <div class="img-push">
                                     {{csrf_field()}}
                                     <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -197,43 +178,60 @@
               <div class="card">
                 <div class="content">
                    <ul class="list-unstyled team-members">
-                   @forelse (Auth::user()->notifications as $notification)
-                                     <li>
-                                      <div class="row">
-                                        <div class="col-xs-3">
-                                          <div class="avatar">
-                                              @if($notification->data['user']['avatar'] != null)
-                                                <img src="{{asset('images/users/'. $notification->data['user']['avatar'])}}" alt="img" class="img-circle img-no-padding img-responsive">
-                                              @else
-                                                <img src="{{ asset('images/users/default.png')}}" alt="img" class="img-circle img-no-padding img-responsive">
-                                              @endif  
-                                          </div>
-                                        </div>
-                                        @if($notification->type == "App\Notifications\RepliedToPost")
-                                        <div class="col-xs-9">
-                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> commented on your post 
-                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
-                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        @elseif($notification->type == "App\Notifications\NewPost")
-                                          <div class="col-xs-9">
-                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> shared new post 
-                                          <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
-                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        @else
-                                        <div class="col-xs-9">
-                                          <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> add New Assignment 
-                                          <b><a href="{{ route('assignments.show',['id' => $notification->data['assignment']['id']]) }}">{{ $notification->data['assignment']['title'] }}</a></b>  on Class <b><a href="{{ route('classes.show',['id' => $notification->data['class']['id']]) }}">{{ $notification->data['class']['name'] }}</a></b> -
-                                          <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        @endif
-                                      </div>
-                                    </li>
-                                    
-                                @empty
-                                    <li><a href="#">No Users activity</a></li>
-                                @endforelse
+                   @forelse (Auth::user()->notifications()->limit(4)->get() as $notification)
+                       <li>
+                        <div class="row">
+                          <div class="col-xs-3">
+                            <div class="avatar">
+                                @if($notification->data['user']['avatar'] != null)
+                                  <img src="{{asset('images/users/'. $notification->data['user']['avatar'])}}" alt="img" class="img-circle img-no-padding img-responsive">
+                                @else
+                                  <img src="{{ asset('images/users/default.png')}}" alt="img" class="img-circle img-no-padding img-responsive">
+                                @endif  
+                            </div>
+                          </div>
+                          @if($notification->type == "App\Notifications\RepliedToPost")
+                          <div class="col-xs-9">
+                            @if($notification->data['post']['postable_type'] == "App\Topic")
+                            <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> replied to your forum post 
+                            <b>
+                            
+                            <b><a href="{{ route('topic.post',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a> </b> -
+
+                            @else
+                            <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> commented on your post 
+                            
+
+                            <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a> </b> -
+                            @endif
+
+                            <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                          </div>
+                          @elseif($notification->type == "App\Notifications\NewPost")
+                            <div class="col-xs-9">
+                            @if($notification->data['post']['postable_type'] == "App\Topic")
+                            <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> posted new forum post 
+                            <b><a href="{{ route('topic.post',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
+
+                            @else
+                            <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> shared new post 
+                            <b><a href="{{ route('posts.show',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a></b> -
+                            @endif
+                            <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                          </div>
+                          @else
+                          <div class="col-xs-9">
+                            <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> add New Assignment 
+                            <b><a href="{{ route('assignments.show',['id' => $notification->data['assignment']['id']]) }}">{{ $notification->data['assignment']['title'] }}</a></b>  on Class <b><a href="{{ route('classes.show',['id' => $notification->data['class']['id']]) }}">{{ $notification->data['class']['name'] }}</a></b> -
+                            <span class="timeago" > {{ $notification->created_at->diffForHumans() }}</span>
+                          </div>
+                          @endif
+                        </div>
+                      </li>
+                      
+                      @empty
+                          <li><a href="#">No Users activity</a></li>
+                      @endforelse
                   </ul>         
                 </div>
               </div>

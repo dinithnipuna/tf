@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Post;
+use App\Cls;
+use App\Topic;
 use Auth;
 use App\Notifications\RepliedToPost;
 use App\Notifications\NewPost;
@@ -20,19 +22,19 @@ class PostController extends Controller
             'body' => 'required|max:1000'
         ]);
 
-        if($request->post_type){
-            $post = Auth::user()->posts()->create([
-                'body'=> $request->input('body'),
-                'post_type' => $request->input('post_type'),
-                'class_id' => $request->input('class_id'),
-            ]);
-        }else{
-            $post = Auth::user()->posts()->create([
-                'body'=> $request->input('body'),
-            ]);
+        $post = Post::create([
+            'body'=> $request->input('body'),
+        ])->user()->associate(Auth::user());
+
+        if($request->post_type == 'App\Cls'){
+            $new_post = Cls::find($request->class_id)->posts()->save($post);
+        }elseif($request->post_type == 'App\Topic'){
+            $new_post = Topic::find($request->topic_id)->posts()->save($post);
+        }else {
+            $new_post = Auth::user()->posts()->save($post);
         }
 
-        Notification::send(Auth::user()->friends(), new NewPost($post));
+        Notification::send(Auth::user()->friends(), new NewPost($new_post));
 
         return redirect()->back();
     }
@@ -64,7 +66,7 @@ class PostController extends Controller
             "reply-{$postId}" => 'required|max:1000'
         ]);
 
-        $post = Post::where('parent_id',null)->find($postId);
+        $post = Post::find($postId);
 
         if(!$post){
             return redirect()->back();
@@ -88,6 +90,21 @@ class PostController extends Controller
         if(!$post){
             return redirect()->back();
         }
+    }
+
+    public function solution(Request $request, $postId){
+        
+        $solution_post = Post::find($postId);
+        $post = Post::find($request->post_id);
+
+        if(!$post){
+            return redirect()->back();
+        }
+
+        $post->solution_id = $solution_post->id;
+        $post->save();
+
+        return redirect()->back();
     }
 
 }

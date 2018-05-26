@@ -22,7 +22,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::whereNull('parent_id')->whereNull('class_id')->where(function($query){
+        $posts = Post::where('postable_type','App\User')->where(function($query){
             return $query->where('user_id',Auth::user()->id)
             ->orWhereIn('user_id',Auth::user()->friends()->lists('id'));
         })->orderBy('created_at','desc')->get();
@@ -70,4 +70,5 @@ class HomeController extends Controller
     {
         Auth::user()->unreadNotifications->markAsRead();
     }
+
 }

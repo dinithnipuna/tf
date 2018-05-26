@@ -39,12 +39,12 @@ class ProfileController extends Controller
             abort(404);
         }
 
-        $posts = $user->posts()->whereNull('parent_id')->get();
-        $requests = Auth::user()->friendRequests();
+        $posts = $user->posts()->orderBy('created_at','desc')->get();
+        $requests = $user->friendRequests();
 
         if($user->hasRole('teacher')){
-            $classes = Cls::where('user_id',$user->id)->get();
-            
+           // $classes = Cls::where('user_id',$user->id)->get();
+            $classes = $user->clses()->get();
 
             return view('teachers.show')
                     ->with('user', $user)
@@ -184,14 +184,21 @@ class ProfileController extends Controller
 
     public function getClasses()
     {
-        $classes = Auth::user()->clses;
-        return view('profile.classes')
-                    ->withClasses($classes);
+        if(Auth::user()->hasRole('student')){
+            $classes = Auth::user()->classes()->paginate(10);
+        }else{
+            $classes = Auth::user()->clses()->paginate(10);
+        }    
+        return view('profile.classes')->withClasses($classes);
     }
 
     public function getAssignments()
     {
-        $classes = Auth::user()->classes();
+        if(Auth::user()->hasRole('student')){
+            $classes = Auth::user()->classes()->paginate(10);
+        }else{
+            $classes = Auth::user()->clses()->paginate(10);
+        }    
         return view('profile.assignments')
                     ->withClasses($classes);
     }

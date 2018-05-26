@@ -31,8 +31,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getAvatar(){
+        if($this->avatar){
+            return $this->avatar;
+        }
+
+        return 'default.png';
+    }
+
     public function posts(){
-        return $this->hasMany('App\Post','user_id');
+        return $this->morphMany('App\Post','postable');
     }
 
     public function institutes(){
@@ -109,7 +117,7 @@ class User extends Authenticatable
     }
 
     public function classes(){
-        return $this->classesOfMine()->wherePivot('accepted',true)->get();
+        return $this->classesOfMine()->wherePivot('accepted',true);
     }
 
     public function classOf(){
@@ -125,7 +133,7 @@ class User extends Authenticatable
     }
 
     public function isJoinWithClass(Cls $class){
-        return (bool) $this->classes()->where('id',$class->id)->count();
+        return (bool) $this->classes()->where('class_id',$class->id)->count();
     }
 
     public function notebooks(){

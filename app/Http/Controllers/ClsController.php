@@ -82,7 +82,7 @@ class ClsController extends Controller
     public function show($id)
     {
         $class = Cls::findOrFail($id);
-        $posts = $class->posts()->whereNull('parent_id')->orderBy('created_at','desc')->get();
+        $posts = $class->posts()->orderBy('created_at','desc')->get();
 
         return view('classes.show')->with('class', $class)->with('posts', $posts);
     }
