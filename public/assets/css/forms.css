@@ -1481,5 +1481,3 @@ input[type=checkbox].checkbox-slider.colored-maroon.toggle:checked~.text:after {
 input[type=checkbox].checkbox-slider.colored-maroon.toggle~.text:after {
     background-color: #981b48
 }
-
-#navBarSearchForm input[type=text]{width:500px !important;}

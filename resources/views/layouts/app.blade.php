@@ -38,6 +38,44 @@
       .ui-menu{
        z-index: 2000;
       }
+
+      .navbar .nav > li > a > .label {
+          position: absolute;
+          top: 2px;
+          right: 4px;
+          text-align: center;
+          font-size: 9px;
+          padding: 3px 3px;
+          line-height: .9;
+      }
+
+      .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+      }
+
+      .navbar-nav > .user-menu .user-image {
+          float: left;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          margin-right: 10px;
+          margin-top: -2px;
+      }
+
+      #navBarSearchForm input[type="text"] {
+          width: 500px !important;
+          height: 40px;
+          margin-top: 7px;
+      }
     </style>
   </body>
 

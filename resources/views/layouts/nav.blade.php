@@ -13,12 +13,13 @@
         <div id="navbar" class="navbar-collapse collapse">
 
           <ul class="nav navbar-nav navbar-right">
-                <li class="actives"><a href="{{ route('profile',['id' => Auth::user()->id]) }}">Profile</a></li>
+           <?php $names = explode(" ", Auth::user()->name); ?>
+                <li class="actives user user-menu"><a href="{{ route('profile',['id' => Auth::user()->id]) }}"><img src="{{ asset('images/users/'. Auth::user()->getAvatar()) }}" class="user-image"> {{ $names[0] }}</a></li>
             <li><a href="/">Home</a></li>
-            <li><a href="/messages"><i class="fa fa-envelope"></i>  @include('messenger.unread-count')</a></li>
+            <li><a href="/messages"><i class="fa fa-envelope fa-lg"></i>  @include('messenger.unread-count')</a></li>
              <li class="dropdown" id="markasread" onclick="markNotificationAsRead({{ Auth::user()->unreadNotifications()->count()}})">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa fa-globe"></i> 
+                                <i class="fa fa-globe fa-lg"></i> 
                                 @if(Auth::user()->unreadNotifications()->count() > 0)
                                 <span class="label label-danger">{{ Auth::user()->unreadNotifications()->count()}}</span>
                                 @endif
@@ -45,7 +46,7 @@
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                <i class="fa fa-btn fa-sort-down fa-lg"></i>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -66,7 +67,7 @@
 
         <form class="navbar-form navbar-right" id="navBarSearchForm">
         <div class="form-group">
-            <input class="form-control input-lg" placeholder="Search..." type="text" name="country" id="autocomplete">
+            <input class="form-control input-lg" placeholder="Search Institute or Teacher..." type="text" name="country" id="autocomplete">
             </div>
         </form>
           

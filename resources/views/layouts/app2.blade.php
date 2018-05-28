@@ -23,6 +23,15 @@
         .fa-btn {
             margin-right: 6px;
         }
+
+        .navbar-nav > .user-menu .user-image {
+            float: left;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: -2px;
+        }
     </style>
 </head>
 <body id="app-layout">

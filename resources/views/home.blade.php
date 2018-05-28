@@ -194,7 +194,6 @@
                           <div class="col-xs-9">
                             @if($notification->data['post']['postable_type'] == "App\Topic")
                             <b><a href="{{ route('profile',['id' => $notification->data['user']['id']]) }}">{{ $notification->data['user']['name']}}</a></b> replied to your forum post 
-                            <b>
                             
                             <b><a href="{{ route('topic.post',['id' => $notification->data['post']['id']]) }}">{{ substr(strip_tags($notification->data['post']['body']),0,50) }}</a> </b> -
 
