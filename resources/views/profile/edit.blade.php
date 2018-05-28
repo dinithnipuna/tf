@@ -65,14 +65,19 @@
                               <div class="well">
                                 <label for="avatar">Profile Picture</label>
                                     <center>
-                                    @if(Auth::user()->avatar != null)
-                                          <img class="profile-user-img img-responsive img-circle " src="{{ asset('images/users/'. Auth::user()->avatar)}}" alt="User profile picture">
-                                    @else
-                                          <img class="profile-user-img img-responsive img-circle" src="{{ asset('images/users/default.png')}}" alt="User profile picture">
-                                    @endif
+                                      <img class="profile-user-img img-responsive img-circle " src="{{ asset('images/users/'. Auth::user()->getAvatar())}}" alt="User profile picture" width="100">           
                                     </center>
                                   <hr/>
                                   <input type="file" name="avatar"/>
+                              </div>
+
+                              <div class="well">
+                                <label for="cover">Profile Cover</label>
+                                    <center>
+                                      <img class="profile-user-img img-responsive" src="{{ asset('images/covers/'. Auth::user()->getCover())}}" alt="User profile picture" height="100">  
+                                    </center>
+                                  <hr/>
+                                  <input type="file" name="cover"/>
                               </div>
                           </div> 
                     </form>   

@@ -39,6 +39,14 @@ class User extends Authenticatable
         return 'default.png';
     }
 
+    public function getCover(){
+        if($this->cover){
+            return $this->cover;
+        }
+
+        return 'profile-cover.jpg';
+    }
+
     public function posts(){
         return $this->morphMany('App\Post','postable');
     }
@@ -61,10 +69,6 @@ class User extends Authenticatable
 
     public function friends(){
         return $this->friendOfMine()->wherePivot('accepted',true)->get()->merge($this->friendOf()->where('accepted',true)->get());
-    }
-
-     public function teachers(){
-        return $this->friendOfMine()->wherePivot('accepted',true)->get()->merge($this->friendOf()->where('accepted',true)->get())->roles()->where('name','teacher')->get();
     }
 
     public function friendRequests(){

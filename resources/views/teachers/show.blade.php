@@ -71,11 +71,12 @@
               <div class="row profile-user-info">
                 <div class="col-sm-8">
                   <div class="profile-user-details clearfix">
+                  <?php $names = explode(" ", $user->name); ?>
                     <div class="profile-user-details-label">
                       First Name
                     </div>
                     <div class="profile-user-details-value">
-                      John
+                      {{ $names[0] }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -83,7 +84,7 @@
                       Last Name
                     </div>
                     <div class="profile-user-details-value">
-                      Breakgrow
+                      {{ $names[1] }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -91,8 +92,7 @@
                       Address
                     </div>
                     <div class="profile-user-details-value">
-                      10880 Malibu Point,<br> 
-                      Malibu, Calif., 90265
+                      {{ $user->address }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -108,7 +108,7 @@
                       Phone number
                     </div>
                     <div class="profile-user-details-value">
-                      011 223 344 556 677
+                      {{ $user->phone }}
                     </div>
                   </div>
                 </div>

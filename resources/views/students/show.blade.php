@@ -25,9 +25,9 @@
 
               <div class="profile-details">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-user"></i>Following: <span>456</span></li>
-                  <li><i class="fa-li fa fa-users"></i>Followers: <span>828</span></li>
-                  <li><i class="fa-li fa fa-comments"></i>Posts: <span>1024</span></li>
+                  <li><i class="fa-li fa fa-user"></i>Institutes: <span>456</span></li>
+                  <li><i class="fa-li fa fa-users"></i>Teachers: <span>{{ $user->friends()->count() }}</span></li>
+                  <li><i class="fa-li fa fa-comments"></i>Posts: <span>{{ $posts->count() }}</span></li>
                 </ul>
               </div>
               
@@ -61,11 +61,12 @@
               <div class="row profile-user-info">
                 <div class="col-sm-8">
                   <div class="profile-user-details clearfix">
+                  <?php $names = explode(" ", $user->name); ?>
                     <div class="profile-user-details-label">
                       First Name
                     </div>
                     <div class="profile-user-details-value">
-                      John
+                      {{ $names[0] }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -73,7 +74,7 @@
                       Last Name
                     </div>
                     <div class="profile-user-details-value">
-                      Breakgrow
+                      {{ $names[1] }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -81,8 +82,7 @@
                       Address
                     </div>
                     <div class="profile-user-details-value">
-                      10880 Malibu Point,<br> 
-                      Malibu, Calif., 90265
+                      {{ $user->address }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -90,7 +90,7 @@
                       Email
                     </div>
                     <div class="profile-user-details-value">
-                      BreakgrowJohn@myemail.com
+                      {{ $user->email }}
                     </div>
                   </div>
                   <div class="profile-user-details clearfix">
@@ -98,7 +98,7 @@
                       Phone number
                     </div>
                     <div class="profile-user-details-value">
-                      011 223 344 556 677
+                      {{ $user->phone }}
                     </div>
                   </div>
                 </div>

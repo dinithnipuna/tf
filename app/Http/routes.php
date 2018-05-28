@@ -54,9 +54,6 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/topics/{forum}/create', ['uses' =>'TopicController@createTopic', 'as' => 'topics.new']);
 	Route::get('/topic/post/{post}', ['uses' =>'TopicController@showTopicPost', 'as' => 'topic.post']);
 	Route::resource('/topics', 'TopicController');
-
-	Route::resource('/comments', 'CommentController');
-	Route::post('/comments/{topic}/create', ['uses' =>'CommentController@leave', 'as' => 'friends.leave']);
 });
 
 Route::auth();

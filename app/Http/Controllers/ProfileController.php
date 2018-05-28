@@ -103,6 +103,18 @@ class ProfileController extends Controller
             }
       }
 
+      if($request->hasFile('cover')){
+            $cover = $request->file('cover');
+            $fileName = time().'.'.$cover->getClientOriginalExtension();
+            $location = public_path('images/covers/').$fileName;
+            Image::make($cover)->fit(800, 300)->save($location);
+            $oldCover = $user->cover; 
+            $user->cover = $fileName;
+            if($oldCover != null){
+                Storage::delete('covers/'.$oldCover);
+            }
+      }
+
       $user->save();
 
       return redirect()->route('profile',$user->id);
