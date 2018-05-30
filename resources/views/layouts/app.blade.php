@@ -83,17 +83,12 @@
 
 <script type="text/javascript">
 
-$.ajaxSetup({
-   headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-});
-
 function markNotificationAsRead(count){
     if(count > 0){
         $.get('/markAsRead');
     }
     
 }
-
 
 $(document).ready(function() {
   $( "#autocomplete" ).autocomplete({

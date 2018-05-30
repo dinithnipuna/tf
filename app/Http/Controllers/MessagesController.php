@@ -26,11 +26,12 @@ class MessagesController extends Controller
 
         // All threads that user is participating in
         $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
+        $latest_thread = Thread::forUser(Auth::id())->latest('updated_at')->first();
 
         // All threads that user is participating in, with new messages
         //$threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
 
-        return view('messenger.index2', compact('threads'));
+        return view('messenger.index', compact('threads'))->with('latest_thread', $latest_thread);
     }
 
     /**
@@ -118,6 +119,37 @@ class MessagesController extends Controller
         return redirect()->route('messages');
     }
 
+
+    public function load($id)
+    {
+        try {
+            $thread = Thread::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
+
+            return redirect()->route('messages');
+        }
+
+        // show current user in list if not a current participant
+        // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
+
+        // don't show the current user in list
+        $userId = Auth::id();
+        //$users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+
+        $users = User::whereIn('id', $thread->participantsUserIds())->get()->except($userId);
+
+        $thread->markAsRead($userId);
+
+        // All threads that user is participating in
+        $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
+
+        // All threads that user is participating in, with new messages
+        //$threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
+
+        return view('messenger.index', compact('threads'))->with('latest_thread', $thread);
+    }
+
     /**
      * Adds a new message to a current thread.
      *
@@ -126,8 +158,12 @@ class MessagesController extends Controller
      */
     public function update($id)
     {
+
+        $receiver = User::find($id);
+        $sender = Auth::user();
+
         try {
-            $thread = Thread::findOrFail($id);
+            $thread = Thread::between([$receiver->id,$sender->id])->latest('updated_at')->first();
         } catch (ModelNotFoundException $e) {
             Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
 
@@ -152,10 +188,10 @@ class MessagesController extends Controller
         $participant->save();
 
         // Recipients
-        if (Input::has('user_id')) {
-            $thread->addParticipant(Input::get('user_id'));
+        if ($receiver) {
+            $thread->addParticipant($receiver->id);
         }
 
-        return redirect()->route('messages.show', $id);
+        return redirect()->route('messages.load', $thread->id);
     }
 }

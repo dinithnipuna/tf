@@ -7,11 +7,6 @@
   <link href="{{ asset('/assets/css/profile2.css') }}" rel="stylesheet">
 @endsection
 
-@section('script') 
-  <!-- bootstrap datepicker -->
-  <script src="{{ asset('/assets/js/custom.js') }}"></script>
-@endsection
-
 @section('content')
       <div class="row" id="user-profile">
         <div class="col-md-4 col-xs-12">
@@ -32,7 +27,11 @@
               </div>
               
               <div class="profile-message-btn center-block text-center">
-                <a href="/messages/{{ $user->id }}/create" class="btn btn-azure">
+                {{-- <a href="/messages/{{ $user->id }}/create" class="btn btn-azure">
+                  <i class="fa fa-envelope"></i>
+                  Send message
+                </a> --}}
+                <a href="" class="btn btn-azure" data-toggle="modal" data-target="#modalShow">
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a>
@@ -248,17 +247,43 @@
     <div class="modal fade" id="modalShow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
+         <form role="form" action="#" method="POST" id="messageForm">
+         {{ method_field('put') }}
+         {{ csrf_field() }}
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            <h4 class="modal-title" id="myModalLabel">{{ $user->name }}</h4>
           </div>
-          <div class="modal-body text-centers">
-            ...
+          <div class="modal-body text-centers">          
+              <div class="form-group">
+                  <label class="control-label">Message</label>
+                  <textarea name="message" class="form-control">{{ old('message') }}</textarea>
+              </div>
+              <input type="hidden" value="{{ $user->id }}" name="user_id">            
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Send</button>
           </div>
+          </form>
         </div>
       </div>
     </div>
+@endsection
+
+@section('script') 
+<script>
+    $.ajaxSetup({
+            headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+    });
+  
+    $(function() {
+      $("#messageForm").submit(function( event ) {
+        event.preventDefault();
+
+        $.post('{{ route('messages.update',$user->id) }}', $.param($(this).serializeArray()), function(data) {
+              $('#modalShow').modal('hide');     
+        });
+      });
+    });
+</script>
 @endsection
