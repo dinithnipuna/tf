@@ -137,6 +137,6 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Subject::find($id)->delete();
     }
 }

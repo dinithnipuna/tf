@@ -112,6 +112,7 @@ class DistrictController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $district = District::find($id);
+        $district->delete();
     }
 }

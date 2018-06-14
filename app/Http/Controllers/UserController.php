@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin');
+        $this->middleware('role:admin|manager');
     }
     /**
      * Display a listing of the resource.
@@ -121,6 +121,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
     }
 }

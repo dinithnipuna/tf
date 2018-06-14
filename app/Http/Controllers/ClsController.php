@@ -145,6 +145,7 @@ class ClsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $class = Cls::find($id);
+        $class->delete();
     }
 }

@@ -44,7 +44,7 @@
                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                               </span>
                             </a>
-                            <a href="#" class="table-link danger">
+                            <a href="#" class="table-link danger" onclick="destroy({{ $user->id }})">
                               <span class="fa-stack">
                                 <i class="fa fa-square fa-stack-2x"></i>
                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -63,4 +63,28 @@
         </div>
     </div>
 
+@endsection
+
+@section('script') 
+<script>
+
+  $.ajaxSetup({
+            headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
+  });
+
+  function destroy(id) {
+      var r = confirm("Confirm Deletion");
+      if (r == true) {
+          $.ajax({
+              url: 'users/'+id,
+              type: 'DELETE',
+              success: function(result) {
+                  location.reload();
+              }
+          });
+      } else {
+          
+      }
+  }
+</script>
 @endsection

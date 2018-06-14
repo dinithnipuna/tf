@@ -95,4 +95,17 @@ class NotebookController extends Controller
         $notes = $notebook->notes()->paginate(10);
         return view('notebooks.show')->with('notebook', $notebook)->with('notes', $notes);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $notebook = Notebook::find($id);
+        $notebook->notes()->delete();
+        $notebook->delete();
+    }
 }

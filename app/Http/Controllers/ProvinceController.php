@@ -104,6 +104,6 @@ class ProvinceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Province::find($id)->delete();
     }
 }

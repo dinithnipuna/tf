@@ -9,6 +9,10 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <link rel="icon" href="img/favicon.png">
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title')</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{{ asset('/js/jQueryUI/jquery-ui.css') }}">

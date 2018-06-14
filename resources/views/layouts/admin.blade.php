@@ -167,7 +167,7 @@
         </footer>
 
     </div>
-
+    @yield('script')
   </body>
 
 <!-- Mirrored from demos.bootdey.com/dayday/sidebar_profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Feb 2018 18:02:02 GMT -->
