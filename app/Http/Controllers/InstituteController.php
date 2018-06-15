@@ -13,6 +13,8 @@ use Session;
 use Hash;
 use Auth;
 use Laratrust;
+use Illuminate\Support\Str;
+use Mail;
 
 class InstituteController extends Controller
 {
@@ -73,7 +75,9 @@ class InstituteController extends Controller
             'package' => 'required'
         ]);
 
-        $request->merge(['password' => Hash::make($request->password)]);
+        $password = $request->password;
+
+        $request->merge(['password' => Hash::make($password)]);
 
         $user = new User();
         $user->name = $request->name;
@@ -85,13 +89,24 @@ class InstituteController extends Controller
         $user->password = $request->password;
         $user->phone = $request->phone;
         $user->package = $request->package;
+        $user->verifyToken = Str::random(40);
         $user->save();
 
         $role = Role::where('name','manager')->first();
 
-        $user->attachRole($role);
+        $user->attachRole($role, $password);
+
+        $this->sendEmail($user);
 
         return redirect()->route('institutes.index');
+    }
+
+    public function sendEmail($user, $password)
+    {
+        Mail::send('mail.verifyEmail', ['user' => $user,'password'=>$password], function ($m) use ($user) {
+            $m->from('admin@tf.com', 'Teacher Finder');
+            $m->to($user->email, $user->name)->subject('Email Verify');
+        });
     }
 
     /**

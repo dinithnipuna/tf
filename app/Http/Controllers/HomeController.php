@@ -11,6 +11,8 @@ use Response;
 use Auth;
 use Hash;
 use Session;
+use Illuminate\Support\Str;
+use Mail;
 
 class HomeController extends Controller
 {
@@ -53,22 +55,59 @@ class HomeController extends Controller
 
     public function signup(Request $request)
     {
+        $password = $request->password;
+
         $request->merge(['password' => Hash::make($request->password)]);
-        
-        $user = User::create($request->all());
+   
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->verifyToken = Str::random(40);
+        $user->save();
 
         $role = Role::where('name', 'student')->first();
 
         $user->attachRole($role);
 
-        Session::flash('success','The User was successfully save!');
+        $this->sendEmail($user, $password);
 
-        return redirect()->route('home');
+        Session::flash('success','Account Created. Verify Email to activate account.!');
+
+        return redirect('/login');
+    }
+
+    public function sendEmail($user, $password)
+    {
+        Mail::send('mail.verifyEmail', ['user' => $user, 'password'=>$password], function ($m) use ($user) {
+            $m->from('admin@tf.com', 'Teacher Finder');
+            $m->to($user->email, $user->name)->subject('Email Verify');
+        });
     }
 
     public function markAsRead()
     {
         Auth::user()->unreadNotifications->markAsRead();
+    }
+
+    public function getVerify($email, $verifyToken)
+    {
+        $user = User::where('email', $email)->first();
+
+        if($user){
+            if($user->verifyToken == $verifyToken){
+                $user->status = 1;
+                $user->verifyToken = Null;
+                $user->save();
+                Session::flash('success','Email Verified Successfully.!');
+            } else{
+                Session::flash('success','Email Already Verified.');
+            }        
+        }else{
+            Session::flash('error','User not Found.');           
+        }
+
+        return redirect('/login');
     }
 
 }

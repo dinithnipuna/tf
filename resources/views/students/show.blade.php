@@ -31,10 +31,12 @@
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a> --}}
-                <a href="" class="btn btn-azure" data-toggle="modal" data-target="#modalShow">
-                  <i class="fa fa-envelope"></i>
-                  Send message
-                </a>
+                @if($user->id != Auth::user()->id)
+                  <a href="" class="btn btn-azure" data-toggle="modal" data-target="#modalShow">
+                    <i class="fa fa-envelope"></i>
+                    Send message
+                  </a>
+                @endif
               </div>
               
               <div class="profile-message-btn center-block text-center">
@@ -46,7 +48,6 @@
                   @elseif(Auth::user()->hasFriendRequestsReceived($user))
                       <a href="{{ route('friends.accept',['userId' => $user->id]) }}" class="btn btn-primary"><i class="fa fa-user"></i>Accept Join Request</a>
                   @endif
-                    <script async type="text/javascript" src="../../cdn.carbonads.com/carboned55.js?zoneid=1673&amp;serve=C6AILKT&amp;placement=bootdeycom" id="_carbonads_js"></script>
                   </li>
                 </ul>
               </div>

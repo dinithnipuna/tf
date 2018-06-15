@@ -14,6 +14,8 @@ use Session;
 use Hash;
 use Laratrust;
 use Auth;
+use Illuminate\Support\Str;
+use Mail;
 
 class TeacherController extends Controller
 {
@@ -51,13 +53,22 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        $request->merge(['password' => Hash::make($request->password)]);
+        $password = $request->password;
+
+        $request->merge(['password' => Hash::make($request->password),'verifyToken' => Str::random(40)]);
         
-        $user = User::create($request->all());
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->verifyToken = Str::random(40);
+        $user->save();
 
         $role = Role::where('name','=','teacher')->first();
 
         $user->attachRole($role);
+
+        $this->sendEmail($user, $password);
 
         if(!Auth::user()->isFriendWith($user)){
             Auth::user()->addFriendAndAccept($user);
@@ -66,6 +77,15 @@ class TeacherController extends Controller
         Session::flash('success','The Teacher was successfully created!');
 
         return redirect()->route('teachers.index');
+    }
+
+
+    public function sendEmail($user, $password)
+    {
+        Mail::send('mail.verifyEmail', ['user' => $user, 'password'=>$password], function ($m) use ($user) {
+            $m->from('admin@tf.com', 'Teacher Finder');
+            $m->to($user->email, $user->name)->subject('Email Verify');
+        });
     }
 
     /**

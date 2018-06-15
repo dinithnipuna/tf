@@ -31,10 +31,12 @@
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a> --}}
+                @if($user->id != Auth::user()->id)
                 <a href="" class="btn btn-azure" data-toggle="modal" data-target="#modalShow">
                   <i class="fa fa-envelope"></i>
                   Send message
                 </a>
+                @endif
               </div>
 
               
@@ -54,7 +56,9 @@
                         {{csrf_field()}} 
                     </form>
                   @else
+                    @if($user->id != Auth::user()->id)
                       <a href="{{ route('friends.join',['userId' => $user->id]) }}" class="btn btn-primary"><i class="fa fa-user"></i>Join with me</a>
+                    @endif
                   @endif
                     <script async type="text/javascript" src="../../cdn.carbonads.com/carboned55.js?zoneid=1673&amp;serve=C6AILKT&amp;placement=bootdeycom" id="_carbonads_js"></script>
                   </li>

@@ -94,7 +94,11 @@
     	<div class="container wrapper">
         <div class="row">
         	<div class="col-sm-5">
+            
+            
+
             <div class="intro-texts">
+
             	<h1 class="text-white">Find Your Teacher !!!</h1>
             	<p>Friend Teacher is a Educational network Service that can be used to connect students and teachers. This service offers Student srive, News Feed, Image/Video Feed, Chat Box, Timeline and lot more. <br /> <br />Why are you waiting for? join us now.</p>
               <button class="btn btn-primary">Learn More</button>
@@ -152,6 +156,29 @@
                 
                 <!--Login-->
                 <div class="tab-pane active" id="login">
+                    
+                    @if(Session::has('success'))
+                      <div class="alert alert-success" role="alert">
+                            {{ Session::get('success') }}
+                        </div>
+                    @endif
+
+                    @if(Session::has('error'))
+                      <div class="alert alert-success" role="alert">
+                            {{ Session::get('error') }}
+                        </div>
+                    @endif
+
+                    @if($errors->count())
+                      <div class="alert alert-danger" role="alert">
+                          <ul>
+                              @foreach($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                    @endif
+
                   <h3>Login</h3>
                   <p class="text-muted">Log into your account</p>
                   

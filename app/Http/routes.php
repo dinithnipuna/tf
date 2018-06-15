@@ -101,3 +101,8 @@ Route::group(['prefix' => 'messages'], function () {
     Route::get('/{id}/load', ['as' => 'messages.load', 'uses' => 'MessagesController@load']);
     Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });
+
+Route::get('verify/{email}/{verifyToken}', [
+	'uses' => 'HomeController@getVerify',
+	'as' => 'verify'
+]);
