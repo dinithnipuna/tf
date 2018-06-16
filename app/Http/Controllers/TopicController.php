@@ -115,4 +115,18 @@ class TopicController extends Controller
         $post = Post::findOrFail($id);
         return view('topics.post')->with('post',$post);
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $topic = Topic::find($id);
+        $topic->posts()->delete();
+        $topic->delete();
+    }
 }

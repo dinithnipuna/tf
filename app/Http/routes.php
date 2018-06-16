@@ -106,3 +106,7 @@ Route::get('verify/{email}/{verifyToken}', [
 	'uses' => 'HomeController@getVerify',
 	'as' => 'verify'
 ]);
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+     \Unisharp\Laravelfilemanager\Lfm::routes();
+ });

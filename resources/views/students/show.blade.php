@@ -136,6 +136,24 @@
                                           <span class="username"><a href="#">{{ $post->user->name }}</a></span>
                                           <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                         </div>
+                                        
+                                        @if($post->user->id == Auth::user()->id)
+
+                                        <div class="box-tools">
+                                          <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                              <i class="fa fa-angle-down"></i>
+                                              <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                              <li><a href="#" data-toggle="modal" data-target="#editPost" data-postId="{{ $post->id }}">Edit Post</a></li>
+                                              <li>
+                                                <a href="#" onclick="destroy({{ $post->id }})">Delete Post</a>
+                                              </li>
+                                              <li class="divider"></li>
+                                              <li><a href="#">Hide Post</a></li>
+                                          </ul>
+                                        </div>
+                                        @endif
                                       </div>
 
                                       <div class="box-body" style="display: block;">
@@ -286,5 +304,20 @@
         });
       });
     });
+
+    function destroy(id) {
+      var r = confirm("Confirm Deletion");
+      if (r == true) {
+          $.ajax({
+              url: '{{ url('posts') }}/'+id,
+              type: 'DELETE',
+              success: function(result) {
+                  location.reload();
+              }
+          });
+      } else {
+          
+      }
+    }
 </script>
 @endsection
