@@ -121,6 +121,7 @@ return [
         'image/svg+xml',
         'application/pdf',
         'text/plain',
+        'video/mp4',
     ],
 
     /*
@@ -151,6 +152,7 @@ return [
         'png'  => 'PNG Image',
         'ppt'  => 'Microsoft PowerPoint',
         'pptx' => 'Microsoft PowerPoint',
+        'mp4'    => 'MP4',
     ],
 
     'file_icon_array' => [
@@ -166,6 +168,7 @@ return [
         'png'  => 'fa-file-image-o',
         'ppt'  => 'fa-file-powerpoint-o',
         'pptx' => 'fa-file-powerpoint-o',
+        'mp4' => 'fa-file-video-o',
     ],
 
     /*

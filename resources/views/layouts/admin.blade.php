@@ -83,7 +83,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav nav nav-stacked"  style="margin-top:40px;">
                 <li class="img-profile-content">
-                  <img src="{{ asset('img/Friends/guy-3.jpg') }}" class="img-circle img-thumbnails">
+                  <img src="{{ asset('images/users/'. Auth::user()->getAvatar()) }}" class="img-circle img-thumbnails">
                 </li>
                 <li class="{{ request()->is('admin') ? 'active' : '' }}">
                     <a href="/admin"><i class="fa fa-dashboard m-r-10"></i> Dashboard</a>

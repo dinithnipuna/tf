@@ -19,6 +19,7 @@
                 <tr>
                   <th><span>Class</span></th>
                   <th><span>Teacher</span></th>
+                  <th><span>No of Students</span></th>
                   <th><span>Created</span></th>
                   <th>&nbsp;</th>
                 </tr>
@@ -28,6 +29,7 @@
                   <tr>
                   <td>{{ $class->name }}</td>
                   <td>{{ $class->user->name }}</td>
+                  <td>{{ $class->students()->count() }}</td>
                   <td>{{ $class->created_at }}</td>
                   <td style="width: 20%;">
                     <a href="{{route('classes.show', $class->id)}}" class="table-link success">

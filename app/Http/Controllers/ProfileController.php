@@ -198,6 +198,22 @@ class ProfileController extends Controller
     {
         if(Auth::user()->hasRole('student')){
             $classes = Auth::user()->classes()->paginate(10);
+        }else if(Auth::user()->hasRole('manager')){
+            $friends = Auth::user()->friends();
+
+            $teachers = [];
+            foreach ($friends as $friend) {
+                if($friend ->hasRole('teacher')){
+                    $teachers[] = $friend;
+                }
+            }
+
+            $classes = [];
+            foreach ($teachers as $teacher) {
+                foreach ($teacher->clses as $cls) {
+                   $classes[] = $cls;
+                }
+            }
         }else{
             $classes = Auth::user()->clses()->paginate(10);
         }    

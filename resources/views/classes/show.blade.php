@@ -50,7 +50,7 @@
             <ul class="nav nav-pills nav-pills-custom-minimal custom-minimal-bottom profile-tabs">
               <li role="presentation" class="active"><a href="#timeline" aria-controls="timeline" role="tab" data-toggle="tab">Timeline</a></li>
               <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">About</a></li>
-              <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Friends</a></li>
+              <li role="presentation"><a href="#students" aria-controls="students" role="tab" data-toggle="tab">Students</a></li>
               <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Photos</a></li>
             </ul>
 
@@ -68,46 +68,21 @@
                         <ul class="list-unstyled profile-about margin-none">
                           <li class="padding-v-5">
                             <div class="row">
-                              <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
-                              <div class="col-sm-8">12 January 1990</div>
+                              <div class="col-sm-4"><span class="text-muted">Teacher</span></div>
+                              <div class="col-sm-8">{{ $class->user->name }}</div>
                             </div>
                           </li>
                           <li class="padding-v-5">
                             <div class="row">
-                              <div class="col-sm-4"><span class="text-muted">Job</span></div>
-                              <div class="col-sm-8">Ninja developer</div>
+                              <div class="col-sm-4"><span class="text-muted">Grade</span></div>
+                              <div class="col-sm-8">{{ $class->grade->name }}</div>
                             </div>
                           </li>
                           <li class="padding-v-5">
                             <div class="row">
-                              <div class="col-sm-4"><span class="text-muted">Gender</span></div>
-                              <div class="col-sm-8">Male</div>
+                              <div class="col-sm-4"><span class="text-muted">Subject</span></div>
+                              <div class="col-sm-8">{{ $class->subject->name }}</div>
                             </div>
-                          </li>
-                          <li class="padding-v-5">
-                            <div class="row">
-                              <div class="col-sm-4"><span class="text-muted">Lives in</span></div>
-                              <div class="col-sm-8">Miami, FL, USA</div>
-                            </div>
-                          </li>
-                          <li class="padding-v-5">
-                            <div class="row">
-                              <div class="col-sm-4"><span class="text-muted">Credits</span></div>
-                              <div class="col-sm-8">249</div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div class="widget">
-                      <div class="widget-header">
-                        <h3 class="widget-caption">About</h3>
-                      </div>
-                      <div class="widget-body bordered-top bordered-sky">
-                         <ul class="list-group">
-                          <li class="list-group-item">
-                            <script async type="text/javascript" src="../../cdn.carbonads.com/carboned55.js?zoneid=1673&amp;serve=C6AILKT&amp;placement=bootdeycom" id="_carbonads_js"></script>
                           </li>
                         </ul>
                       </div>
@@ -115,57 +90,19 @@
 
                     <div class="widget widget-friends">
                       <div class="widget-header">
-                        <h3 class="widget-caption">Friends</h3>
+                        <h3 class="widget-caption">Students</h3>
                       </div>
                       <div class="widget-body bordered-top  bordered-sky">
                         <div class="row">
                           <div class="col-md-12">
                             <ul class="img-grid" style="margin: 0 auto;">
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/guy-6.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/woman-3.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/guy-2.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/guy-9.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/woman-9.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li class="clearfix">
-                                <a href="#">
-                                  <img src="img/Friends/guy-4.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/guy-1.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/woman-4.jpg" alt="image">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <img src="img/Friends/guy-6.jpg" alt="image">
-                                </a>
-                              </li>
+                              @foreach($class->students as $user)
+                                <li>
+                                  <a href="{{ route('profile',['id' => $user->id]) }}">
+                                    <img src="{{asset('images/users/'. $user->getAvatar())}}" alt="image">
+                                  </a>
+                                </li>
+                              @endforeach
                             </ul>
                           </div>
                         </div>
@@ -174,60 +111,28 @@
 
                     <div class="widget">
                       <div class="widget-header">
-                        <h3 class="widget-caption">Groups</h3>
+                        <h3 class="widget-caption">Forums</h3>
                       </div>
                       <div class="widget-body bordered-top bordered-sky">
                         <div class="card">
                           <div class="content">
                             <ul class="list-unstyled team-members">
+
                               <li>
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="img/Likes/likes-1.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                        </div>
+                                            <i class="fa fa-comments fa-2x"></i>
                                     </div>
                                     <div class="col-xs-6">
-                                       Github
+                                       {{ $class->name }} Forum
                                     </div>
                         
                                     <div class="col-xs-3 text-right">
-                                        <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+                                        <a href="{{route('forums.show', $class->id)}}" class="btn btn-sm btn-azure btn-icon"><i class="fa fa-search-plus"></i></a>
                                     </div>
                                 </div>
                               </li>
-                              <li>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="img/Likes/likes-3.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        Css snippets
-                                    </div>
-                        
-                                    <div class="col-xs-3 text-right">
-                                        <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
-                                    </div>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="img/Likes/likes-2.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        Html Action
-                                    </div>
-                        
-                                    <div class="col-xs-3 text-right">
-                                        <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
-                                    </div>
-                                </div>
-                              </li>
+                             
                             </ul>
                           </div>
                         </div>  
@@ -270,7 +175,7 @@
                           <div class="box box-widget">
                               <div class="box-header with-border">
                                 <div class="user-block">
-                                  <img class="img-circle" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  <img class="img-circle" src="{{asset('images/users/'. $post->user->getAvatar())}}" alt="User Image">
                                   <span class="username"><a href="{{ route('profile',['id' => $post->user->id]) }}">{{ $post->user->name }}</a></span>
                                   <span class="description">Shared publicly - {{ $post->created_at->diffForHumans() }}</span>
                                 </div>
@@ -305,7 +210,7 @@
                               <div class="box-footer box-comments" style="display: block;">
                               @foreach($post->replies as $reply)
                                 <div class="box-comment">
-                                  <img class="img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="User Image">
+                                  <img class="img-circle img-sm" src="{{asset('images/users/'. $reply->user->getAvatar())}}" alt="User Image">
                                   <div class="comment-text">
                                     <span class="username">
                                     {{ $reply->user->name }}
@@ -318,7 +223,7 @@
                               </div>
                               <div class="box-footer" style="display: block;">
                                 <form role="form" action="{{route('posts.reply',['postId' => $post->id])}}" method="POST">
-                                  <img class="img-responsive img-circle img-sm" src="{{ asset('/images/teachers/default.jpg') }}" alt="Alt Text">
+                                  <img class="img-responsive img-circle img-sm" src="{{asset('images/users/'. Auth::user()->getAvatar())}}" alt="Alt Text">
                                   <div class="img-push">
                                     {{csrf_field()}}
                                     <input type="text" name="reply-{{ $post->id }}" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -394,136 +299,26 @@
                 </div>
               </div><!-- end about -->
               <!-- friends -->
-              <div role="tabpanel" class="tab-pane" id="messages">
+              <div role="tabpanel" class="tab-pane" id="students">
                 <div class="row">
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/woman-1.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
+                  @foreach($class->students as $user)
+                    <div class="col-md-3">
+                      <div class="contact-box center-version">
+                        <a href="#">
+                          <img alt="image" class="img-circle" src="{{asset('images/users/'. $user->getAvatar())}}">
+                          <h3 class="m-b-xs"><strong>{{ $user->name }}</strong></h3>
+            
+                          {{-- <div class="font-bold">Graphics designer</div> --}}
+                        </a>
+                        <div class="contact-box-footer">
+                          <div class="m-t-xs btn-group">
+                            {{-- <a href="students1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
+                            <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a> --}}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/woman-2.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/woman-3.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/guy-1.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/guy-2.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/guy-3.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/guy-5.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="contact-box center-version">
-                      <a href="#">
-                        <img alt="image" class="img-circle" src="img/Friends/woman-4.jpg">
-                        <h3 class="m-b-xs"><strong>John Doe</strong></h3>
-          
-                        <div class="font-bold">Graphics designer</div>
-                      </a>
-                      <div class="contact-box-footer">
-                        <div class="m-t-xs btn-group">
-                          <a href="messages1.html" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Send Messages</a>
-                          <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  @endforeach
                 </div>  
               </div><!-- end friends -->
               <!-- photos -->

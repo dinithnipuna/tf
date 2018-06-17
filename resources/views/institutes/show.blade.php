@@ -165,7 +165,7 @@
                                <div class="media user-follower">
                                 <img src="{{asset('images/users/'. $friend->getAvatar())}}" alt="User Image" class="media-object pull-left">
                                 <div class="media-body">
-                                  <a href="#">{{ $friend->name }}<br><span class="text-muted username">@mrantonius</span></a>
+                                  <a href="{{ route('profile',['id' => $friend->id]) }}">{{ $friend->name }}<br><span class="text-muted username">@mrantonius</span></a>
                                   
                                    @if(Auth::user()->hasRole('student') && !Auth::user()->isFriendWith($friend))
                                         @if(Auth::user()->hasFriendRequestPending($friend))
