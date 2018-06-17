@@ -17,9 +17,10 @@
                 <div class="panel-body"> 
                   <div class="collapse in">
                     <!-- form start -->
-                    <form role="form" action="{{route('classes.store')}}" method="POST">
-                      {{csrf_field()}}      
-                        <div class="form-group">
+                    <form role="form" action="{{route('classes.store')}}" method="POST" enctype="multipart/form-data">
+                      {{csrf_field()}}     
+                      <div class="col-md-8">
+                          <div class="form-group">
                             <label for="name">Class Name</label>
                             <input type="text" class="form-control" name="name" value="{{old('name')}}" id="name">
                         </div>
@@ -48,6 +49,18 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Create New Class</button>
+                      </div> 
+                      <div class="col-md-4">
+                              <div class="well">
+                                <label for="cover">Profile Cover</label>
+                                    <center>
+                                      <img class="profile-user-img img-responsive" src="{{ asset('images/covers/class-cover.jpg')}}" alt="User profile picture" height="100">  
+                                    </center>
+                                  <hr/>
+                                  <input type="file" name="cover"/>
+                              </div>
+                          </div> 
+                        
                            
                     </form>   
                   </div>

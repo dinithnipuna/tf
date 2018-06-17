@@ -13,30 +13,32 @@
         <div class="col-md-10 col-md-offset-1">
           <div class="row">
             <div class="col-md-12">
-              <div class="bg-picture" style="background-image:url('img/Cover/cover.jpg')">
+              <div class="bg-picture" style="background-image:url('{{ asset('images/covers/'. $class->getCover())}}')">
                 <span class="bg-picture-overlay"></span><!-- overlay -->
                 <!-- meta -->
                 <div class="box-layout meta bottom">
                   <div class="col-md-6 clearfix">
                     <span class="img-wrapper pull-left m-r-15">
-                      <img src="img/Friends/guy-3.jpg" alt="" style="width:64px" class="br-radius">
+                      <img src="{{ asset('images/users/'. $class->user->getAvatar())}}" alt="" style="width:64px" class="br-radius">
                     </span>
                     <div class="media-body">
                       <h3 class="text-white mb-2 m-t-10 ellipsis">{{ $class->name }}</h3>
-                      <h5 class="text-white"> @username</h5>
+                      <h5 class="text-white">{{ $class->user->name }}</h5>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="pull-right">
+                      @if( Auth::user()->id == $class->user->id)
                       <div class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle btn btn-azure" href="#" aria-expanded="false"> Following <span class="caret"></span></a>
+                        <a data-toggle="dropdown" class="dropdown-toggle btn btn-azure" href="#" aria-expanded="false"> Settings <span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a href="#">Poke</a></li>
+                            <li><a href="{{ route('classes.edit', $class->id) }}">Update Class</a></li>
                             <li><a href="#">Private message</a></li>
                             <li class="divider"></li>
                             <li><a href="#">Unfollow</a></li>
                         </ul>
                       </div>
+                      @endif
                     </div>
                   </div>
                 </div><!--/ meta -->
@@ -294,7 +296,7 @@
 
                               <div class="box-body" style="display: block;">
                                 
-                                {!! $post->body !!}
+                               <div id="post-body-{{ $post->id }}">{!! $post->body !!}</div>
 
                                 <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
                                 <a href="{{route('posts.like',['postId' => $post->id])}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</a>
@@ -748,6 +750,32 @@
         </div>
       </div>
     </div>
+
+          <!-- Edit Product Modal -->
+<div class="modal fade" id="editPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <form role="form" action="#" method="POST" id='editForm'>
+    {{csrf_field()}}   
+    {{ method_field('PUT') }}    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" value="" name="post_id" id="post_id">
+        <div class="form-group">
+          <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body" id="body"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="submit" class="btn btn-primary">Update Post</button>
+      </div>
+       </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('script') 
@@ -765,6 +793,11 @@
     ],
     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
     relative_urls: false,
+    setup: function (editor) {
+      editor.on('change', function () {
+          tinymce.triggerSave();
+      });
+    },
     file_browser_callback : function(field_name, url, type, win) {
       var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
       var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
@@ -792,6 +825,37 @@
   $.ajaxSetup({
             headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
   });
+
+  $(function() {
+      $('#editPost').on('shown.bs.modal', function (event) {
+          var modal = $(this);
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var postid = button.data('postid') // Extract info from data-* attributes
+
+          $.get('/posts/'+ postid +'/edit', function(data) {
+              tinyMCE.remove();
+              modal.find('.modal-body #post_id').val(data.id);
+              modal.find('.modal-body #body').val(data.body);
+              tinymce.init(editor_config);
+          });
+      });
+
+      $( "#editForm" ).submit(function( event ) {
+        event.preventDefault();
+
+        $.post('{{ route('posts.update',1) }}', $.param($(this).serializeArray()), function(data) {
+              $('#editPost').modal('hide'); 
+              $('#post-body-'+data.id).html(data.body);      
+        });
+      });
+    });
+
+      // Prevent Bootstrap dialog from blocking focusin
+$(document).on('focusin', function(e) {
+  if ($(e.target).closest(".mce-window").length) {
+    e.stopImmediatePropagation();
+  }
+});
 
   function destroy(id) {
       var r = confirm("Confirm Deletion");

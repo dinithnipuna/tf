@@ -14,6 +14,8 @@ use Session;
 use Hash;
 use Auth;
 use Laratrust;
+use Image;
+use Storage;
 
 class ClsController extends Controller
 {
@@ -68,6 +70,15 @@ class ClsController extends Controller
       $class->grade_id = $request->grade_id;
       $class->subject_id = $request->subject_id;
       $class->type = $request->type;
+
+      if($request->hasFile('cover')){
+            $cover = $request->file('cover');
+            $fileName = time().'.'.$cover->getClientOriginalExtension();
+            $location = public_path('images/covers/').$fileName;
+            Image::make($cover)->fit(800, 390)->save($location);
+            $class->cover = $fileName;
+      }
+
       $class->save();
 
       return redirect()->route('classes.index');
@@ -132,6 +143,19 @@ class ClsController extends Controller
       $class->grade_id = $request->grade_id;
       $class->subject_id = $request->subject_id;
       $class->type = $request->type;
+
+      if($request->hasFile('cover')){
+            $cover = $request->file('cover');
+            $fileName = time().'.'.$cover->getClientOriginalExtension();
+            $location = public_path('images/covers/').$fileName;
+            Image::make($cover)->fit(800, 390)->save($location);
+            $oldCover = $class->cover; 
+            $class->cover = $fileName;
+            if($oldCover != null){
+                Storage::delete('covers/'.$oldCover);
+            }
+      }
+
       $class->save();
 
       return redirect()->route('classes.index');

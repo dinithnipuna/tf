@@ -35,4 +35,12 @@ class Cls extends Model
     public function topics(){
         return $this->hasMany('App\Topic','class_id');
     }
+
+     public function getCover(){
+        if($this->cover){
+            return $this->cover;
+        }
+
+        return 'class-cover.jpg';
+    }
 }

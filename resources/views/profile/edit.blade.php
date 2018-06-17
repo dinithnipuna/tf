@@ -20,7 +20,11 @@
                       <div class="col-md-8">
 
                         <div class="form-group">
-                            <label for="name">Institute Name</label>
+                            @if( Auth::user()->hasRole('manager'))
+                              <label for="name">Institute Name</label>
+                            @else
+                              <label for="name">Full Name</label>
+                            @endif
                             <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" id="name">
                         </div>
 
@@ -39,7 +43,7 @@
                         </div>   
 
                         <div class="form-group col-md-4">
-                          <label for="district_id">Province</label>
+                          <label for="district_id">District</label>
                           <select class="form-control" id="district_id" name="district_id">
                             @foreach ($districts as $district)
                               <option value="{{$district->id}}" {{ Auth::user()->district_id == $district->id ? 'selected' : ''}}>{{$district->name}}</option>
