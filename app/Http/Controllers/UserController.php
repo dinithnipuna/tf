@@ -10,6 +10,7 @@ use App\Role;
 use Session;
 use Hash;
 use Laratrust;
+use Auth;
 
 class UserController extends Controller
 {
@@ -125,5 +126,32 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+    }
+
+    public function getChange($id = null)
+    {
+        if($id == null){
+            $user = Auth::user();
+        }else{
+            $user = User::find($id);
+        }
+        
+        return view('users.change')->with('user',$user);
+    }
+
+    public function postChange(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $request->merge(['password' => Hash::make($request->password)]);  
+        $user->password = $request->password;
+        $user->save();
+        Session::flash('success','The Password successfully changed!');
+
+        if(Auth::user()->id == $user->id){
+            return redirect()->route('home');
+        }else{
+            return redirect()->route('users.index');
+        }
+        
     }
 }

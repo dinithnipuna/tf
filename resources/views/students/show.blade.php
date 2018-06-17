@@ -69,6 +69,7 @@
                       {{ $names[0] }}
                     </div>
                   </div>
+                  @if(count($names) > 1)
                   <div class="profile-user-details clearfix">
                     <div class="profile-user-details-label">
                       Last Name
@@ -77,6 +78,7 @@
                       {{ $names[1] }}
                     </div>
                   </div>
+                  @endif
                   <div class="profile-user-details clearfix">
                     <div class="profile-user-details-label">
                       Address

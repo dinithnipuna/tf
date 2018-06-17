@@ -45,7 +45,7 @@
                         <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-btn fa-sort-down fa-lg"></i>
                             </a>
 
@@ -59,6 +59,7 @@
                                     <li><a href="/admin"><i class="fa fa-btn fa-gear"></i> Admin Panel</a></li>
                                 @endif
                                 <li><a href="{{ route('profile.edit') }}"><i class="fa fa-btn fa-pencil"></i> Update Profile</a></li>
+                                <li><a href="{{url('password/change')}}"><i class="fa fa-btn fa-key"></i> Change Password</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>

@@ -107,6 +107,9 @@ Route::get('verify/{email}/{verifyToken}', [
 	'as' => 'verify'
 ]);
 
+Route::get('password/change/{id?}', ['uses' =>'UserController@getChange']);
+Route::post('password/change', ['uses' =>'UserController@postChange', 'as' => 'users.change']);
+
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
      \Unisharp\Laravelfilemanager\Lfm::routes();
  });
