@@ -4,7 +4,7 @@
   <h1> Teachers <small>Edit Teacher</small> </h1>
   <ol class="breadcrumb">
     <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="/admin/users"><i class="fa fa-users"></i> Teachers</a></li>
+    <li><a href="/teachers"><i class="fa fa-users"></i> Teachers</a></li>
     <li class="active">Edit Teacher</li>
   </ol>
 @endsection

@@ -19,6 +19,10 @@ class Post extends Model
         return $this->belongsTo('App\User','user_id');
     }
 
+    public function postableUser(){
+        return $this->belongsTo('App\User','postable_id');
+    }
+
     public function replies(){
         return $this->morphMany('App\Post','postable');
     }

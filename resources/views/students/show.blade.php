@@ -126,6 +126,17 @@
                   <div class="tab-pane fade in active" id="tab-timeline">
                     <div class="row">
                       <div class="col-md-12">
+                         <!-- post state form -->
+                      <div class="box profile-info n-border-top">
+                        <form role="form" action="{{route('posts.store')}}" method="POST">
+                            {{csrf_field()}} 
+                            <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body" id="postBody"></textarea>
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            <div class="box-footer box-form">
+                                <button type="submit" class="btn btn-azure">Post</button>
+                            </div>
+                        </form>
+                      </div><!-- end post state form -->
                         <!--   posts -->
                         @if(!$posts->count())
                               <p>There's nothing on yout timeline, yet.</p>
@@ -160,7 +171,7 @@
 
                                       <div class="box-body" style="display: block;">
                                         
-                                        {!! $post->body !!}
+                                        <div id="post-body-{{ $post->id }}">{!! $post->body !!}</div>
           
                                         <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
                                         <a href="{{route('posts.like',['postId' => $post->id])}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</a>
@@ -289,13 +300,112 @@
         </div>
       </div>
     </div>
+
+             <!-- Edit Product Modal -->
+<div class="modal fade" id="editPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <form role="form" action="#" method="POST" id='editForm'>
+    {{csrf_field()}}   
+    {{ method_field('PUT') }}    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" value="" name="post_id" id="post_id">
+        <div class="form-group">
+          <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?" name="body" id="body"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="submit" class="btn btn-primary">Update Post</button>
+      </div>
+       </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('script') 
+<!-- TinyMCE -->
+<script src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
 <script>
     $.ajaxSetup({
             headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
     });
+
+        var editor_config = {
+    path_absolute : "/",
+    selector: "textarea",
+    plugins: [
+      "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+      "searchreplace wordcount visualblocks visualchars code fullscreen",
+      "insertdatetime media nonbreaking save table contextmenu directionality",
+      "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    relative_urls: false,
+    setup: function (editor) {
+                  editor.on('change', function () {
+                      tinymce.triggerSave();
+                  });
+                },
+    file_browser_callback : function(field_name, url, type, win) {
+      var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+      var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+      var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+      if (type == 'image') {
+        cmsURL = cmsURL + "&type=Images";
+      } else {
+        cmsURL = cmsURL + "&type=Files";
+      }
+
+      tinyMCE.activeEditor.windowManager.open({
+        file : cmsURL,
+        title : 'Filemanager',
+        width : x * 0.8,
+        height : y * 0.8,
+        resizable : "yes",
+        close_previous : "no"
+      });
+    }
+  };
+
+  tinymce.init(editor_config);
+  
+    $(function() {
+      $('#editPost').on('shown.bs.modal', function (event) {
+          var modal = $(this);
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var postid = button.data('postid') // Extract info from data-* attributes
+
+          $.get('/posts/'+ postid +'/edit', function(data) {
+              tinyMCE.remove();
+              modal.find('.modal-body #post_id').val(data.id);
+              modal.find('.modal-body #body').val(data.body);
+              tinymce.init(editor_config);
+          });
+      });
+
+      $( "#editForm" ).submit(function( event ) {
+        event.preventDefault();
+
+        $.post('{{ route('posts.update',1) }}', $.param($(this).serializeArray()), function(data) {
+              $('#editPost').modal('hide'); 
+              $('#post-body-'+data.id).html(data.body);      
+        });
+      });
+    });
+
+    // Prevent Bootstrap dialog from blocking focusin
+$(document).on('focusin', function(e) {
+  if ($(e.target).closest(".mce-window").length) {
+    e.stopImmediatePropagation();
+  }
+});
   
     $(function() {
       $("#messageForm").submit(function( event ) {

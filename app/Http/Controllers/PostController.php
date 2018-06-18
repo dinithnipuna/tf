@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Post;
 use App\Cls;
 use App\Topic;
+use App\User;
 use Auth;
 use App\Notifications\RepliedToPost;
 use App\Notifications\NewPost;
@@ -31,7 +32,7 @@ class PostController extends Controller
         }elseif($request->post_type == 'App\Topic'){
             $new_post = Topic::find($request->topic_id)->posts()->save($post);
         }else {
-            $new_post = Auth::user()->posts()->save($post);
+            $new_post = User::find($request->user_id)->posts()->save($post);
         }
 
         Notification::send(Auth::user()->friends(), new NewPost($new_post));
